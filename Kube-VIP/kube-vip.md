@@ -1,7 +1,5 @@
 # Install KubeVIP and KubeVIP Cloud Provider
 
-https://github.com/kube-vip/helm-charts
-
 ## Install Script via Manifest
 
 Requirements:
