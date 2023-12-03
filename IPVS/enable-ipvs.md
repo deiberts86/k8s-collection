@@ -9,7 +9,7 @@ Images sourced from Kubernetes.io
 
 ### `Kube-Proxy with IPTables mode:`
 
-<p>By default, kube-proxy in older versions of Kubernetes (before version 1.14) used IPTables as the default mode for service implementation. In this mode, kube-proxy creates IPTables rules to achieve service abstraction. Each service's cluster IP is represented as an IPTables rule. Traffic destined for the service's cluster IP is redirected to the appropriate backend pods based on IPTables rules.
+<p>By default, kube-proxy in older versions of Kubernetes (before version 1.14) used IPTables as the default mode for service implementation. In this mode, kube-proxy creates IPTables rules to achieve service abstraction. Each service's cluster IP is represented as an IPTables rule. Traffic destined for the service's cluster IP is redirected to the appropriate backend pods based on IPTables rules.</p>
 
 ### `Kube-Proxy with IPVS mode:`
 
