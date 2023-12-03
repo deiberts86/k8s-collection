@@ -134,9 +134,9 @@ modprobe nf_conntrack_ipv6
 ```
 
 ## Edit your Kube-Proxy
-For `k3s` or `RKE2` Kubernetes Deployment
+For `k3s` or `RKE2` Kubernetes Deployment. Restart of your service for Kubernetes will needed if you `imported` your cluster into Rancher MCM.
 
-<p>To take advantage of IPVS, you will need to edit the Kube-Proxy parameters of your `config.yaml` file. These parameters will tell Kube-Proxy to leverage IPVS instead of IPTables. There are numerous scheduler options to choose from for IPVS which includes Round Robin, Least Connect, Destination Hashing, Source Hashing, etc. Referenced documentation is available at the beginning of this readme document.</p>
+To take advantage of IPVS, you will need to edit the Kube-Proxy parameters of your `config.yaml` file. These parameters will tell Kube-Proxy to leverage IPVS instead of IPTables. There are numerous scheduler options to choose from for IPVS which includes Round Robin, Least Connect, Destination Hashing, Source Hashing, etc. Referenced documentation is available at the beginning of this readme document.
 
 Here are a few examples below:
 
