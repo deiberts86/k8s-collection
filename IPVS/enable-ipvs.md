@@ -4,7 +4,7 @@
 Images sourced from Kubernetes.io
 
 
-![IPTables](/k8s-collection/IPVS/images/iptables-img.png) | ![IPVS](/k8s-collection/IPVS/images/ipvs-img.png)
+![IPTables](/IPVS/images/iptables-img.png) | ![IPVS](/IPVS/images/ipvs-img.png)
 
 
 ### `Kube-Proxy with IPTables mode:`
