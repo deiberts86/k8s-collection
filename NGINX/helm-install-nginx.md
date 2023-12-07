@@ -17,14 +17,46 @@ helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
 helm repo update
 ```
 4. Ensure that you have a load-balancer IP address reserved. Leverage MetalLB or KubeVIP for bare-metal or whatever your external load-balancer is I.E. F5, AWS, etc. Once reserved, you want to ensure you define your new NGINX Daemonset to be as a service load-balancer. 
-5. Now to the installation of NGINX-Ingress:
+5. Now to the installation of NGINX-Ingress as a one-liner:
 
 ```sh
 helm upgrade --install nginx-secondary ingress-nginx/ingress-nginx --set controller.ingressClass="nginx-secondary" --set controller.ingressClassResource.default=false --set controller.ingressClassResource.name="nginx-secondary" --set controller.service.type=LoadBalancer --set controller.kind=DaemonSet --set controller.config.use-forwarded-headers=true --set controller.config.extraArgs.enable-ssl-passthrough=true --namespace nginx --create-namespace
 ```
-- Note, this can be simplified with a `values.yaml` with all the appropriate flags needed. Also keep in mind that if you want the daemonset deployed, you need to ensure that `daemonset` is set with `controller.kind=DaemonSet`
 
-6. Once successful, you should have a dedicated NGINX ingressClass just for SSL PASSTHROUGH and forward headers.
+7. Or create your own values.yaml file for easier deployment. Note, you can add more values as needed. Examples provided in the `helm-values-example` folder in this repo.
+
+8. Create your `nginx-values.yaml` file.
+
+```sh
+cat > nginx-values.yaml <<EOF
+controller:
+  admissionWebhooks:
+    createSecretJob:
+      securityContext:
+        allowPrivilegeEscalation: false
+  kind: DaemonSet
+  config:
+    use-forwarded-headers: true
+    extraArgs:
+      enable-ssl-passthrough: true
+  ingressClass: nginx-secondary
+  ingressClassResource:
+    defaults: false
+  ingressClassResource:
+    name: nginx-secondary
+  service:
+    type: LoadBalancer
+EOF
+```
+9. Now to use your new values file.
+
+```sh
+helm upgrade -i nginx-secondary ingress-nginx/ingress-nginx --create-namespace --namespace nginx --values nginx-values.yaml
+```
+
+- Note: Keep in mind that if you want the daemonset deployed, you need to ensure that `daemonset` is set with `controller.kind=DaemonSet`
+
+10. Once successful, you should have a dedicated NGINX ingressClass just for SSL PASSTHROUGH and forward headers.
 
 - Check Daemonset, ingresClass, and service:
 
@@ -34,4 +66,4 @@ kubectl -n nginx get pods -o wide # you should see pods on all of your workers /
 kubectl get ingressClass # you should see your new "nginx-secondary" ingressClass
 ```
 
-7. If your checks all pass and you have a valid external-IP for your service, you should now be able to use this `nginx-secondary` ingressClass.
+11. If your checks all pass and you have a valid external-IP for your service, you should now be able to use this `nginx-secondary` ingressClass.
