@@ -34,6 +34,7 @@ controller:
     createSecretJob:
       securityContext:
         allowPrivilegeEscalation: false
+  dnsPolicy: ClusterFirstWithHostNet
   kind: DaemonSet
   config:
     use-forwarded-headers: true
@@ -68,7 +69,7 @@ kubectl get ingressClass # you should see your new "nginx-secondary" ingressClas
 
 11. If your checks all pass and you have a valid external-IP for your service, you should now be able to use this `nginx-secondary` ingressClass.
 
-12. Add your network policy for your ingress.
+12. (SKIP FOR NOW) Add your network policy for your ingress. Advanced Options... ValidationWebHook error observed. Networking needs to be locked down.
 
 ```sh
 apiVersion: networking.k8s.io/v1
