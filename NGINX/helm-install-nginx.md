@@ -67,3 +67,31 @@ kubectl get ingressClass # you should see your new "nginx-secondary" ingressClas
 ```
 
 11. If your checks all pass and you have a valid external-IP for your service, you should now be able to use this `nginx-secondary` ingressClass.
+
+12. Add your network policy for your ingress.
+
+```sh
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: nginx-secondary-default-net-policy
+  namespace: nginx
+spec:
+  ingress:
+    - ports:
+        - port: 80
+          protocol: TCP
+        - port: 443
+          protocol: TCP
+  podSelector:
+    matchExpressions:
+      - key: app.kubernetes.io/instance
+        operator: In
+        values:
+          - nginx-secondary
+    matchLabels:
+      app.kubernetes.io/instance: nginx-secondary
+  policyTypes:
+    - Ingress
+status: {}
+```
