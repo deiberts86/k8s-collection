@@ -69,8 +69,8 @@ spec:
     controller:
       config:
         use-forwarded-headers: "true"
-        extraArgs:
-          enable-ssl-passthrough: "true"
+      extraArgs:
+        enable-ssl-passthrough: "true"
 ```
 
 #### Disable Host Ports
