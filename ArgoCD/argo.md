@@ -7,8 +7,8 @@
 - kubernetes clsuter
 
 ## Reference
-[artifacthub.io](https://artifacthub.io/packages/helm/argo/argocd-apps)
-[argocd docs](https://argo-cd.readthedocs.io/en/stable/)
+- [artifacthub.io](https://artifacthub.io/packages/helm/argo/argocd-apps)
+- [argocd docs](https://argo-cd.readthedocs.io/en/stable/)
 
 ## Install
 
