@@ -3,9 +3,12 @@ Repo for Kubernetes related material or apps tailored towards K3S or RKE2.
 
 README For:
 - [Ambassador] InProgress
-- [Cilium]
-- [ETCD](/ETCD/etcd-commands.md)
-- [IPVS](/IPVS/enable-ipvs.md)
+- [ArgoCD] InProgress
+- [CertManager](/CertManager/certmanager.md)
+- [Cilium] InProgress
+- [ETCD](/RKE2/ETCD/etcd-commands.md)
+- [Harbor]
+- [IPVS](/RKE2/IPVS/enable-ipvs.md)
 - [ISTIO] InProgress
 - [Kubeseal](/Kubeseal/kubeseal.md)
 - [KubeVIP](/Kube-VIP/kube-vip.md)
