@@ -1,0 +1,20 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: monitoring-network-coredns-policy
+  namespace: kube-system
+spec:
+  ingress:
+  - ports:
+    - port: 9153
+      protocol: TCP
+    from:
+      - namespaceSelector:
+          matchLabels:
+            kubernetes.io/metadata.name: cattle-monitoring-system
+  podSelector:
+    matchLabels:
+      k8s-app: kube-dns
+      app.kubernetes.io/name : rke2-coredns
+  policyTypes:
+  - Ingress

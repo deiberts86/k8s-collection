@@ -1,0 +1,16 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: rancher
+  namespace: argocd
+spec:
+  clusterResourceWhitelist:
+    - group: '*'
+      kind: '*'
+  destinations:
+    - name: in-cluster
+      namespace: cattle-system
+      server: https://kubernetes.default.svc
+  sourceRepos:
+    - https://releases.rancher.com/server-charts/latest
+status: {}

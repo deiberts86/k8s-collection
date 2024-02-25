@@ -1,0 +1,60 @@
+global:
+  resolve_timeout: 5m
+route:
+  receiver: "null"
+  group_by:
+  - namespace
+  routes:
+  - receiver: cattle-monitoring-system/gmail-alert-test/send-to-gmail.
+    match:
+      severity: warning
+    matchers:
+    - namespace="cattle-monitoring-system"
+    continue: true
+    group_wait: 30s
+    group_interval: 5m
+    repeat_interval: 5m
+  - receiver: "null"
+    matchers:
+    - alertname =~ "InfoInhibitor|Watchdog"
+  group_wait: 30s
+  group_interval: 5m
+  repeat_interval: 12h
+inhibit_rules:
+- target_matchers:
+  - severity =~ warning|info
+  source_matchers:
+  - severity = critical
+  equal:
+  - namespace
+  - alertname
+- target_matchers:
+  - severity = info
+  source_matchers:
+  - severity = warning
+  equal:
+  - namespace
+  - alertname
+- target_matchers:
+  - severity = info
+  source_matchers:
+  - alertname = InfoInhibitor
+  equal:
+  - namespace
+receivers:
+- name: "null"
+- name: cattle-monitoring-system/gmail-alert-test/gmailreceiver
+  email_configs:
+  - send_resolved: true
+    to: sendtome@gmail.com
+    from: sendfromme@example.com
+    smarthost: smtp.gmail.com:587
+    auth_username: sendtome@gmail.com
+    auth_identity: sendtome@gmail.com
+    auth_password: $key_redacted
+    require_tls: true
+    tls_config:
+      server_name: smtp.gmail.com
+      insecure_skip_verify: false
+templates:
+- /etc/alertmanager/config/*.tmpl

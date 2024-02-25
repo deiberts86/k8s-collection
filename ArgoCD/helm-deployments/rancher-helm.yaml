@@ -1,0 +1,25 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: rancher-latest
+  namespace: argocd
+spec:
+  project: rancher
+  source:
+    repoURL: 'https://releases.rancher.com/server-charts/latest'
+    targetRevision: 2.7.5
+    helm:
+      parameters:
+        - name: hostname
+          value: rancher.10-7-2-179.sslip.io
+        - name: ingress.ingressClassName
+          value: nginx
+        - name: bootstrapPassword
+          value: "1234qwer!@#$QWER"
+    chart: rancher
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: cattle-system
+  syncPolicy:
+    syncOptions:
+      - CreateNamespace=true

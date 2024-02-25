@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: argocd-rbac-cm
+  namespace: argocd
+  labels:
+    app.kubernetes.io/name: argocd-cm
+    app.kubernetes.io/part-of: argocd
+data:
+  accounts.shaun: apiKey,login
+  accounts.shaun.enabled: "true"
+  policy.csv: |
+    p, role:argocd-server, projects, *, */*, allow
+    p, role:argocd-server, applications, *, */*, allow
+    p, role:argocd-server, clusters, get, *, allow
+    p, role:argocd-server, repositories, get, *, allow
+    p, role:argocd-server, repositories, create, *, allow
+    p, role:argocd-server, repositories, update, *, allow
+    p, role:argocd-server, repositories, delete, *, allow
+    p, role:argocd-server, logs, get, *, allow
+    p, role:argocd-server, exec, create, */*, allow
+    g, shaun, role:argocd-server

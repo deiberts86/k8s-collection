@@ -1,0 +1,13 @@
+---
+server: https://vipaddr.local:9345
+token: 
+selinux: true
+#profile: cis-1.6
+kube-apiserver-arg:
+- authorization-mode=RBAC,Node
+kubelet-arg:
+# - protect-kernel-defaults=true (Needs investigation; note it's on RHEL 8.7)
+- read-only-port=0
+- authorization-mode=Webhook
+write-kube-config-mode: 0640
+...

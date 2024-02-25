@@ -1,0 +1,26 @@
+apiVersion: monitoring.coreos.com/v1alpha1
+kind: AlertmanagerConfig
+metadata:
+  name: default-receiver
+  namespace: cattle-monitoring-system
+  labels:
+    alertmanagerConfig: default-receiver
+spec:
+  receivers:
+    - name: gmail
+      email_configs:
+        - send_resolved: true
+          to: sendtome@gmail.com
+          from: sendfromme@example.com
+          smarthost: smtp.gmail.com:587
+          auth_username: sendtome@gmail.com
+          auth_identity: sendtome@gmail.com
+          auth_password: $key_redacted
+  route:
+    group_by:
+      - job
+    receiver: none
+    routes:
+      - match:
+          namespace: cattle-monitoring-system
+        receiver: gmail
