@@ -6,7 +6,6 @@ README For:
 - [ArgoCD](/ArgoCD/argo.md)
 - [CertManager](/CertManager/certmanager.md)
 - [Cilium] InProgress
-
 - [Harbor](/Harbor/harbor.md)
 - [IPVS](/RKE2/IPVS/enable-ipvs.md)
 - [ISTIO] InProgress
@@ -19,6 +18,8 @@ README For:
 - NGINX
   - [NGINX-Create-Ingress](/NGINX/helm-install-nginx.md)
   - [RKE2 NGINX-Additional-Options](/NGINX/Ingress-options.md)
+- Prometheus
+  - [AlertManager Emailer](/Prometheus/alertmanager/gmail-alertmanager.yaml)
 - Rancher
   - [Rancher Airgap Images](/Rancher/rancher-pull-images.md)
   - [Grab Core Libraries](/Rancher/core-libraries_images.md)
@@ -28,5 +29,3 @@ README For:
   - [IPVS](/RKE2/IPVS/enable-ipvs.md)
   - [Sysctl-options-Debian](/RKE2/sysctl-settings/ubuntu-60-rke2.conf)
   - [Sysctl-options-RPM](/RKE2/sysctl-settings/rhel-60-rke2.conf)
-
-
