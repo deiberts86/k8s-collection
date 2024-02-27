@@ -23,7 +23,7 @@ spec:
   - Ingress
 ```
 
-# Fix for Ingress NGINX Alerts from Prometheus
+# Fix for False Positive Ingress NGINX Alerts from Prometheus
 
 ```yaml
 apiVersion: networking.k8s.io/v1
