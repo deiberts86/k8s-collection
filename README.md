@@ -20,6 +20,7 @@ README For:
   - [RKE2 NGINX-Additional-Options](/NGINX/Ingress-options.md)
 - Prometheus
   - [AlertManager Emailer](/Prometheus/alertmanager/gmail-alertmanager.yaml)
+  - [Monitoring Rules](/Prometheus/monitoring-rules.md)
 - Rancher
   - [Rancher Airgap Images](/Rancher/rancher-pull-images.md)
   - [Grab Core Libraries](/Rancher/core-libraries_images.md)
