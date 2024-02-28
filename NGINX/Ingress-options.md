@@ -73,6 +73,25 @@ spec:
         enable-ssl-passthrough: "true"
 ```
 
+#### NGINX extra controller args example:
+
+```sh
+apiVersion: helm.cattle.io/v1
+kind: HelmChartConfig
+metadata:
+  name: rke2-ingress-nginx
+  namespace: kube-system
+spec:
+  valuesContent: |-
+    controller:
+      config:
+        force-ssl-redirect: true
+        proxy-body-size: 0
+        proxy-read-timeout: 1800
+        proxy-request-buffering: 'off'
+        proxy-send-timeout: 1800
+```
+
 #### Disable Host Ports
 - Disable if you don't want port 80 or 443 exposed on the host directly.
 
