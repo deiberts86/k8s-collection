@@ -5,8 +5,8 @@
 
 ```sh
 cat > /var/tmp/tools-images.txt <<EOF >
-ghcr.io/kube-vip/kube-vip:v0.6.3
-ghcr.io/kube-vip/kube-vip-cloud-provider:v0.0.7
+ghcr.io/kube-vip/kube-vip:v0.7.1
+ghcr.io/kube-vip/kube-vip-cloud-provider:v0.0.9
 EOF
 ```
 
