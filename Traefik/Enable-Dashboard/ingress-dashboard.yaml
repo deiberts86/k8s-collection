@@ -1,0 +1,29 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+  name: traefik-ingress
+  namespace: traefik
+spec:
+  ingressClassName: traefik
+  rules:
+    - host: traefik.10-7-2-13.sslip.io
+      http:
+        paths:
+          - backend:
+              service:
+                name: traefik-dashboard-service
+                port:
+                  number: 9000
+            path: /api
+            pathType: Prefix
+    - host: traefik.10-7-2-13.sslip.io
+      http:
+        paths:
+          - backend:
+              service:
+                name: traefik-dashboard-service
+                port:
+                  number: 9000
+            path: /dashboard
+            pathType: Prefix
