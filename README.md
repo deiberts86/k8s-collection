@@ -8,7 +8,8 @@ README For:
 - [Cilium] InProgress
 - [Harbor](/Harbor/harbor.md)
 - [IPVS](/RKE2/IPVS/enable-ipvs.md)
-- [ISTIO] InProgress
+- [ISTIO]
+  - [Blue-Green](/Istio-ServiceMesh/blue-green_deployment.md)
 - [Kubeseal](/Kubeseal/kubeseal.md)
 - [KubeVIP](/Kube-VIP/kube-vip.md)
 - [KubeVirt](/KubeVirt/kubevirt.md)
@@ -30,3 +31,4 @@ README For:
   - [IPVS](/RKE2/IPVS/enable-ipvs.md)
   - [Sysctl-options-Debian](/RKE2/sysctl-settings/ubuntu-60-rke2.conf)
   - [Sysctl-options-RPM](/RKE2/sysctl-settings/rhel-60-rke2.conf)
+- Traefik (Inprogress)
