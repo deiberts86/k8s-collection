@@ -5,7 +5,7 @@
 
 ## Repositories
 ```sh
-export RKE2_MINOR=25
+export RKE2_MINOR=28
 export LINUX_MAJOR=9 # or 8 or 9 etc
 cat << EOF > /etc/yum.repos.d/rancher-rke2-1-${RKE2_MINOR}-latest.repo
 [rancher-rke2-common-latest]

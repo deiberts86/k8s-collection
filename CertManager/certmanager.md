@@ -7,7 +7,8 @@ helm upgrade -i \
   --namespace cert-manager \
   --create-namespace \
   --version v1.14.1 \
-  --set installCRDs=true
+  --set installCRDs=true \
+  --set "extraArgs={--feature-gates=ExperimentalGatewayAPISupport=true}"
 ```
 
 # Create CA Issuer Certificates

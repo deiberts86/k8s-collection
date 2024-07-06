@@ -104,9 +104,10 @@ metadata:
 spec:
   valuesContent: |-
     controller:
-      kind: DaemonSet
-      daemonset:
-        useHostPort: false
+      hostNetwork: false
+      hostPort:
+        enabled: false
+
 ```
 
 #### Enable Load Balancer Servies and Publish
