@@ -27,3 +27,4 @@ kubelet-arg:
 - authorization-mode=Webhook
 - streaming-connection-idle-timeout=5m
 - protect-kernel-defaults=true
+- "strict-transport-security-directives max-age=31536000,includeSubDomains,preload"
