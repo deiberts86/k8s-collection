@@ -79,7 +79,7 @@ spec:
         - name: port
           value: "6443"
         - name: vip_interface
-          value: ens33
+          value: eth0
         - name: vip_cidr
           value: "32"
         - name: cp_enable
@@ -99,8 +99,8 @@ spec:
         - name: vip_retryperiod
           value: "1"
         - name: address
-          value: 192.168.30.50
-        image: ghcr.io/kube-vip/kube-vip:v0.6.4
+          value: 192.168.30.221
+        image: ghcr.io/kube-vip/kube-vip:v0.8.0
         imagePullPolicy: Always
         name: kube-vip
         resources: {}

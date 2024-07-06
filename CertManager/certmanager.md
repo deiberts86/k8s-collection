@@ -1,12 +1,14 @@
 # Install `cert-manager`
 
 ```sh
+helm repo add jetstack https://charts.jetstack.io --force-update
 helm upgrade -i \
   cert-manager jetstack/cert-manager \
   --namespace cert-manager \
   --create-namespace \
-  --version v1.13.0 \
-  --set installCRDs=true
+  --version v1.14.1 \
+  --set installCRDs=true \
+  --set "extraArgs={--feature-gates=ExperimentalGatewayAPISupport=true}"
 ```
 
 # Create CA Issuer Certificates

@@ -4,5 +4,5 @@
 ```sh
 helm repo add rancher-stable https://releases.rancher.com/server-charts/stable
 helm repo update
-helm upgrade -i rancher rancher-stable/rancher --create-namespace --namespace cattle-system --set hostname=rancher.10-7-2-72.sslip.io --set rancherImage=harbor.10-7-2-65.sslip.io/docker-virtual/rancher/rancher
+helm upgrade -i rancher rancher-stable/rancher --create-namespace --namespace cattle-system --set hostname=rancher.10-7-2-11.sslip.io --set ingress.ingressClassName=cilium --version 2.8.5
 ```
