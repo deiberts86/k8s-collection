@@ -10,6 +10,11 @@ README For:
 - [IPVS](/RKE2/IPVS/enable-ipvs.md)
 - [ISTIO]
   - [Blue-Green](/Istio-ServiceMesh/blue-green_deployment.md)
+- KinD (Kubernetes in Docker)
+  - [KinD Cilium_simple](/KinD/Deploy-KinD-Cilium_simple.md)
+  - [KinD Cilium_helm](/KinD/Deploy-KinD-Cilium_helm.md)
+  - [KinD Cilium_no-proxy](/KinD/Deploy-KinD-Cilium_no-proxy.md)
+  - [KinD Cilium_ClusterMesh](/KinD/Deploy-Kind-Cilium_clusterMesh.md)
 - [Kubeseal](/Kubeseal/kubeseal.md)
 - [KubeVIP](/Kube-VIP/kube-vip.md)
 - [KubeVirt](/KubeVirt/kubevirt.md)
