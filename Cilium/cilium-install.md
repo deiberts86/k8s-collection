@@ -160,7 +160,6 @@ export API_SERVER_IP=127.0.0.1
 export API_SERVER_PORT=6443
 cat << EOF > /etc/rancher/rke2/config.yaml
 cni:
-- multus
 - cilium
 node-ip: "$NODEIP"
 node-external-ip: "$NODEEXTIP"
