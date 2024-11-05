@@ -6,7 +6,7 @@ README For:
 - [ArgoCD](/ArgoCD/argo.md)
 - [CertManager](/CertManager/certmanager.md)
 - Cilium
-  - [Cilium Install with RKE2](/Cilium/cilium-instal.md)
+  - [Cilium Install with RKE2](/Cilium/cilium-install.md)
   - [Cilium ServiceMesh with GatewayAPI](/Cilium/cilium-gatewayAPI.md)
   - [Cilium PrometheusMetrics Example](/Cilium/Cilium-prometheusMetrics.md)
 - [Harbor](/Harbor/harbor.md)
