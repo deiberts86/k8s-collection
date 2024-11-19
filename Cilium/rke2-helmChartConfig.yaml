@@ -1,0 +1,65 @@
+apiVersion: helm.cattle.io/v1
+kind: HelmChartConfig
+metadata:
+  name: rke2-cilium
+  namespace: kube-system
+spec:
+  valuesContent: |-
+    bgp:
+      enabled: false
+    cni:
+      chainingMode: "none"
+      exclusive: true # Set to 'false' if using multiple CNIs
+    bpf:
+      masquerade: true
+      preallocateMaps: true
+      tproxy: true
+    bpfClockProbe: true
+    global:
+      clusterCIDR: 10.42.0.0/16
+      clusterCIDRv4: 10.42.0.0/16
+      clusterDNS: 10.43.0.10
+      clusterDomain: cluster.local
+      rke2DataDir: /var/lib/rancher/rke2
+      serviceCIDR: 10.43.0.0/16
+      systemDefaultIngressClass: cilium
+    hubble:
+      enabled: true
+      metrics:
+        enabled:
+        - dns
+        - drop
+        - tcp
+        - flow
+        - port-distribution
+        - icmp
+        - httpV2:exemplars=true;labelsContext=source_ip,source_namespace,source_workload,destination_ip,destination_namespace,destination_workload,traffic_direction
+      relay:
+        enabled: true
+      ui:
+        enabled: true
+        service:
+          type: ClusterIP
+    ingressController:
+      enabled: true
+      loadbalancerMode: shared
+    k8sClientRateLimit:
+      burst: 100
+      qps: 50
+    k8sServiceHost: 127.0.0.1
+    k8sServicePort: "6443"
+    kubeProxyReplacement: true
+    l2announcements:
+      enabled: true
+      leaseDuration: "300s"
+      leaseRenewDeadline: "30s"
+      leaseRetryPeriod: "10s"
+    l7Proxy: true
+    operator:
+      prometheus:
+        enabled: true
+      replicas: 2
+      rollOutPods: true
+    prometheus:
+      enabled: true
+    rollOutCiliumPods: true
