@@ -11,8 +11,8 @@
 
 ## `Prep and Pull Image Lists`
 ```sh
-export RKE2_VER=v1.24.16+rke2r1
-export RANCHER_VER=v2.7.1
+export RKE2_VER=v1.25.16+rke2r1
+export RANCHER_VER=v2.8.5
 export RKE2_VER_DASH=`echo $RKE2_VER | sed s/+/-/`
 mkdir -p /var/tmp/rancher-temp
 cd /var/tmp/rancher-temp

@@ -4,7 +4,7 @@ selinux: true
 profile: "cis-1.23"
 secrets-encryption: true
 write-kubeconfig-mode: "0640"
-pod-security-admission-config-file: /etc/rancher/rke2/rancher-pss.yaml
+pod-security-admission-config-file: /etc/rancher/rke2/rancher-psact.yaml
 kube-controller-manager-arg:
 - bind-address=127.0.0.1
 - tls-min-version=VersionTLS12
@@ -27,4 +27,3 @@ kubelet-arg:
 - authorization-mode=Webhook
 - streaming-connection-idle-timeout=5m
 - protect-kernel-defaults=true
-- "strict-transport-security-directives max-age=31536000,includeSubDomains,preload"
