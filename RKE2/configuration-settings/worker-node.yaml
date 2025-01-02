@@ -1,5 +1,5 @@
 ---
-server: https://vipaddr.local:9345
+server: https://LB-addr.local:9345
 token: <TOKEN>
 selinux: true
 profile: cis-1.23

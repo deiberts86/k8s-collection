@@ -6,8 +6,8 @@ helm upgrade -i \
   cert-manager jetstack/cert-manager \
   --namespace cert-manager \
   --create-namespace \
-  --version v1.14.1 \
-  --set installCRDs=true \
+  --version v1.14.4 \
+  --set enable.crds=true \
   --set "extraArgs={--feature-gates=ExperimentalGatewayAPISupport=true}"
 ```
 
