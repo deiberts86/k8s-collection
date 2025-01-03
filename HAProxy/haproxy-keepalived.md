@@ -242,6 +242,7 @@ kubelet-arg:
 - streaming-connection-idle-timeout=5m
 - protect-kernel-defaults=true
 EOF
+systemctl enable --now rke2-server
 ```
 
 **Other Nodes to add configuration**
@@ -279,5 +280,8 @@ kubelet-arg:
 - streaming-connection-idle-timeout=5m
 - protect-kernel-defaults=true
 EOF
+systemctl enable --now rke2-server
 ```
+
+
 
