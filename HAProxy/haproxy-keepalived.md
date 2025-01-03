@@ -4,7 +4,7 @@ This is the process to setup a highly available load balancer and virtual IP (vI
 </p>
 
 - Environment:
-  - 3 lightweight VMs (Rocky9) running HAProxy
+  - 2 lightweight VMs (Rocky9) running HAProxy
     - 2 vCPU and 4Gi of RAM with 10Gi of Storage
   - 3 VMs (Rocky9) hosting RKE2
     - 4 vCPU and 8Gi of RAM with 30Gi of Storage
@@ -21,13 +21,15 @@ dnf upgrade -y; dnf install -y haproxy keepalived
 ```sh
 cat > /etc/haproxy/haproxy.cfg <<EOF
 global
-    log /dev/log local0
-    log /dev/log local1 notice
-    chroot /var/lib/haproxy
-    stats socket /run/haproxy/admin.sock mode 660 level admin expose-fd listeners
-    stats timeout 30s
-    user haproxy
-    group haproxy
+    log            /dev/log local0 warning
+    log            /dev/log local1 notice
+    chroot         /var/lib/haproxy
+    pidfile        /var/run/haproxy.pid
+    stats socket   /var/lib/haproxy/stats mode 660 level admin expose-fd listeners
+    stats timeout  30s
+    maxconn        4000
+    user           haproxy
+    group          haproxy
     daemon
 
 defaults
@@ -45,32 +47,41 @@ frontend kubernetes_https
 frontend kubernetes_api
     bind 0.0.0.0:6443
     mode tcp
+    option tcplog
     default_backend kubernetes_api_server
+
+frontend kubernetes_join
+    bind 0.0.0.0:9345
+    mode tcp
+    option tcplog
+    default_backend kubernetes_rke2_join
 
 backend kubernetes_ingress
     mode tcp
-    balance roundrobin
+    balance leastconn
     server k8s-nginx-1 <NGINX_NODE_IP1>:443 check
     server k8s-nginx-2 <NGINX_NODE_IP2>:443 check
     server k8s-nginx-3 <NGINX_NODE_IP3>:443 check
 
 backend kubernetes_api_server
     mode tcp
+    option tcplog
+    option tcp-check
     balance roundrobin
+    default-server inter 10s downinter 5s rise 2 fall 2 slowstart 60s
     server k8s-api-1 <K8S_API_NODE_IP1>:6443 check
     server k8s-api-2 <K8S_API_NODE_IP2>:6443 check
     server k8s-api-3 <K8S_API_NODE_IP3>:6443 check
-EOF
 
-# Setup HAProxy User to leverage SOCK
-mkdir -p /run/haproxy
-chown haproxy:haproxy /run/haproxy
-chmod 777 /run/haproxy
-# Adjust SELinux if you're running in Enforcing mode
-semanage fcontext -a -t haproxy_var_run_t "/var/run/haproxy(/.*)?"
-restorecon -R /var/run/haproxy
-# Restart systemctl daemon
-systemctl daemon-reload
+backend kubernetes_rke2_join
+    mode tcp
+    option tcplog
+    option tcp-check
+    balance roundrobin
+    server k8s-api-1 <K8S_API_NODE_IP1>:9345 check
+    server k8s-api-2 <K8S_API_NODE_IP2>:9345 check
+    server k8s-api-3 <K8S_API_NODE_IP3>:9345 check
+EOF
 # Enable HAProxy service now with a symbolic link to start on restart
 systemctl enable --now haproxy
 ```
@@ -79,7 +90,13 @@ systemctl enable --now haproxy
 - Master setup
 ```sh
 cat > /etc/keepalived/keepalived.conf <<EOF
-vrrp_instance VI_1 {
+vrrp_script chk_haproxy {
+  script "killall -0 haproxy"
+  interval 2
+  weight 2
+}
+
+vrrp_instance VIP {
     state MASTER
     interface <NETWORK_INTERFACE>
     virtual_router_id 10           # Must be the same on all nodes
@@ -89,8 +106,18 @@ vrrp_instance VI_1 {
         auth_type PASS
         auth_pass secret           # Must match on all nodes
     }
+
+    unicast_src_ip <IP_ADDRESS>   # Source IP address of this machine
+    unicast_peer {
+      <PEER_IP_ADDRESS>           # The IP address of your other Peer for HAProxy
+    }
+
     virtual_ipaddress {
-        <VIRTUAL_IP>
+      <VIRTUAL_IP>
+    }
+
+    track_script {
+      chk_haproxy
     }
 }
 EOF
@@ -101,7 +128,13 @@ systemctl enable --now keepalived
   - Note, lower the priority per backup
 ```sh
 cat > /etc/keepalived/keepalived.conf <<EOF
-vrrp_instance VI_1 {
+vrrp_script chk_haproxy {
+  script "killall -0 haproxy"
+  interval 2
+  weight 2
+}
+
+vrrp_instance VIP {
     state BACKUP
     interface <NETWORK_INTERFACE>
     virtual_router_id 10          # Must be the same on all nodes
@@ -111,8 +144,18 @@ vrrp_instance VI_1 {
         auth_type PASS
         auth_pass secret          # Must match on all nodes
     }
+
+    unicast_src_ip <IP_ADDRESS>   # Source IP address of this machine
+    unicast_peer {
+      <PEER_IP_ADDRESS>           # The IP address of your other Peer for HAProxy
+    }
+
     virtual_ipaddress {
-        <VIRTUAL_IP>
+      <VIRTUAL_IP>
+    }
+
+    track_script {
+      chk_haproxy
     }
 }
 EOF
@@ -127,6 +170,7 @@ nmcli
 # Validate you saw your VIP on your primary interface
 ```
 - Checking for VIP Rollover
+- Run a constant ping to the VIP and check out the latency bump when you invoke a rollover
 ```sh
 # From master node
 systemctl stop keepalived
@@ -135,3 +179,105 @@ ssh <user>@second-node
 nmcli
 # Now turn back on keepalived on the first node
 ```
+
+## Install RKE2
+- Login to your servers and do the following below to install RKE2 and leverage your new KeepAliveD VIP
+
+**Setup Repo**
+```sh
+export RKE2_MINOR=30
+export LINUX_MAJOR=9 # or 8 or 9 etc
+cat << EOF > /etc/yum.repos.d/rancher-rke2-1-${RKE2_MINOR}-latest.repo
+[rancher-rke2-common-latest]
+name=Rancher RKE2 Common Latest
+baseurl=https://rpm.rancher.io/rke2/latest/common/centos/${LINUX_MAJOR}/noarch
+enabled=1
+gpgcheck=1
+gpgkey=https://rpm.rancher.io/public.key
+
+[rancher-rke2-1-${RKE2_MINOR}-latest]
+name=Rancher RKE2 1.${RKE2_MINOR} Latest
+baseurl=https://rpm.rancher.io/rke2/latest/1.${RKE2_MINOR}/centos/${LINUX_MAJOR}/x86_64
+enabled=1
+gpgcheck=1
+gpgkey=https://rpm.rancher.io/public.key
+EOF
+# install rke2-server
+dnf install -y rke2-server
+```
+
+**Setup config.yaml (bootstrap node or node1)**
+- adjust your `VIP` in the config.yaml and setup your `pod-security-admission-config-file`
+  - Ref for PSA file: https://ranchermanager.docs.rancher.com/reference-guides/rancher-security/psa-restricted-exemptions
+```sh
+cat > /etc/rancher/rke2/config.yaml <<EOF
+tls-san:
+- <VIP-HERE>
+token: thisIsATest
+selinux: true
+profile: "cis"
+secrets-encryption: true
+write-kubeconfig-mode: "0640"
+pod-security-admission-config-file: /etc/rancher/rke2/rancher-psact.yaml
+kube-controller-manager-arg:
+- bind-address=127.0.0.1
+- tls-min-version=VersionTLS12
+- tls-cipher-suites=TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384
+- use-service-account-credentials=true
+kube-scheduler-arg: 
+- tls-min-version=VersionTLS12
+- tls-cipher-suites=TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384
+kube-apiserver-arg:
+- tls-min-version=VersionTLS12
+- tls-cipher-suites=TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384
+- audit-log-path=/var/lib/rancher/rke2/server/logs/audit.log
+- anonymous-auth=false
+- authorization-mode=RBAC,Node
+- audit-log-maxage=30
+- audit-log-mode=blocking-strict
+kubelet-arg:
+- anonymous-auth=false
+- read-only-port=0
+- authorization-mode=Webhook
+- streaming-connection-idle-timeout=5m
+- protect-kernel-defaults=true
+EOF
+```
+
+**Other Nodes to add configuration**
+```sh
+cat > /etc/rancher/rke2/config.yaml <<EOF
+server: https://VIP:9345
+token: thisIsATest
+tls-san:
+- <VIP-HERE>
+selinux: true
+profile: "cis"
+secrets-encryption: true
+write-kubeconfig-mode: "0640"
+pod-security-admission-config-file: /etc/rancher/rke2/rancher-psact.yaml
+kube-controller-manager-arg:
+- bind-address=127.0.0.1
+- tls-min-version=VersionTLS12
+- tls-cipher-suites=TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384
+- use-service-account-credentials=true
+kube-scheduler-arg: 
+- tls-min-version=VersionTLS12
+- tls-cipher-suites=TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384
+kube-apiserver-arg:
+- tls-min-version=VersionTLS12
+- tls-cipher-suites=TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384
+- audit-log-path=/var/lib/rancher/rke2/server/logs/audit.log
+- anonymous-auth=false
+- authorization-mode=RBAC,Node
+- audit-log-maxage=30
+- audit-log-mode=blocking-strict
+kubelet-arg:
+- anonymous-auth=false
+- read-only-port=0
+- authorization-mode=Webhook
+- streaming-connection-idle-timeout=5m
+- protect-kernel-defaults=true
+EOF
+```
+
