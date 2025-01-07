@@ -1,0 +1,19 @@
+[ req ]
+default_bits           = 4096
+distinguished_name     = req_distinguished_name
+req_extensions         = req_ext
+prompt                 = no
+ 
+[ req_distinguished_name ]
+commonName             = ${FQDN}
+countryName            = US
+stateOrProvinceName    = WA
+localityName           = Nowhere
+organizationalUnitName = home
+organizationName       = Lab
+
+[ req_ext ]
+subjectAltName = @alt_names
+ 
+[alt_names]
+DNS.1   = ${FQDN}

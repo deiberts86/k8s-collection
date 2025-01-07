@@ -1,0 +1,14 @@
+apiVersion: helm.cattle.io/v1
+kind: HelmChartConfig
+metadata:
+  name: rke2-ingress-nginx
+  namespace: kube-system
+spec:
+  valuesContent: |-
+    controller:
+      config:
+        use-forwarded-headers: true
+        enable-access-log-for-default-backend: true
+        use-proxy-protocol: true             # Enable PROXY protocol support
+        real-ip-header: proxy_protocol       # Use the PROXY protocol for the real IP
+        set-real-ip-from: 192.168.30.0/24    # CIDR range of your HAProxy nodes

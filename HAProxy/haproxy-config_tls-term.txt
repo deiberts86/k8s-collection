@@ -1,0 +1,51 @@
+global
+    log            /dev/log local0 warning
+    log            /dev/log local1 notice
+    chroot         /var/lib/haproxy
+    pidfile        /var/run/haproxy.pid
+    stats socket   /var/lib/haproxy/stats mode 660 level admin expose-fd listeners
+    stats timeout  30s
+    maxconn        4000
+    user           haproxy
+    group          haproxy
+    daemon
+
+defaults
+    log global
+    option tcplog
+    timeout connect 5000ms
+    timeout client 50000ms
+    timeout server 50000ms
+
+frontend kubernetes_https
+    bind 0.0.0.0:443 ssl crt /etc/ssl/app-demo-combined.pem alpn h2,http/1.1
+    mode http
+    redirect scheme https if !{ ssl_fc }       # Redirect HTTP to HTTPS
+    http-request set-header X-Forwarded-Proto https if { ssl_fc }
+    http-request set-header X-Forwarded-Host %[req.hdr(Host)]   # Forward original Host header
+    http-request set-header X-Real-IP %[src]                   # Forward the client's IP
+    default_backend kubernetes_ingress
+
+frontend kubernetes_api
+    bind *:6443
+    mode tcp
+    option tcplog
+    default_backend kubernetes_api_server
+
+backend kubernetes_ingress
+    mode http
+    balance leastconn
+    http-check expect status 200
+    server k8s-nginx-1 192.168.30.226:443 check ssl verify none alpn h2,http/1.1
+    server k8s-nginx-2 192.168.30.186:443 check ssl verify none alpn h2,http/1.1
+    server k8s-nginx-3 192.168.30.91:443 check ssl verify none alpn h2,http/1.1
+
+backend kubernetes_api_server
+    mode tcp
+    option tcplog
+    option tcp-check
+    balance roundrobin
+    default-server inter 10s downinter 5s rise 2 fall 2 slowstart 60s
+    server k8s-api-1 192.168.30.226:6443 check
+    server k8s-api-2 192.168.30.186:6443 check
+    server k8s-api-3 192.168.30.91:6443 check
