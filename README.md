@@ -43,5 +43,4 @@ README For:
   - [Sysctl-options-RPM](/RKE2/sysctl-settings/rhel-60-rke2.conf)
 - Strimzi-Kafka
   - [Install kafka](./Strimzi-Kafka/strimzi-kafka-install.md)
-- Traefik (Inprogress)
-multus-testmultus-testmultus-test
+- [Traefik](./Traefik/Enable-Dashboard/)
