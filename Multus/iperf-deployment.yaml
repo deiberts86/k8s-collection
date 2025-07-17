@@ -1,0 +1,92 @@
+# Uses Secondary Interface on your VMs
+apiVersion: "k8s.cni.cncf.io/v1"
+kind: NetworkAttachmentDefinition
+metadata:
+  name: multus-conf
+  namespace: multus-test
+spec:
+  config: '{
+            "cniVersion": "0.3.0",
+            "type": "macvlan",
+            "master": "eth1",
+            "mode": "bridge",
+            "ipam": {
+                "type": "host-local",
+                "ranges": [
+                    [ {
+                         "subnet": "192.168.5.0/24",
+                         "rangeStart": "192.168.5.110",
+                         "rangeEnd": "192.168.5.120",
+                         "gateway": "192.168.5.1"
+                    } ]
+                ]
+            }
+        }'
+---
+# Set DHCP pool for external connections
+apiVersion: "k8s.cni.cncf.io/v1" 
+kind: NetworkAttachmentDefinition 
+metadata: 
+  name: multicast
+  namespace: multus-test
+spec: 
+  config: '{ 
+      "cniVersion": "0.3.0", 
+      "type": "macvlan", 
+      "master": "eth1", 
+      "mode": "bridge", 
+      "ipam": { 
+        "type": "dhcp" 
+      }
+    }'
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: iperf-server-deployment
+  namespace: multus-test
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: iperf-server
+  template:
+    metadata:
+      labels:
+        app: iperf-server
+      annotations: 
+        k8s.v1.cni.cncf.io/networks: multus-conf 
+    spec:
+      containers:
+      - name: iperf-server-container
+        image: harbor.example.com/homelab/iperf-container:latest
+        ports:
+        - containerPort: 5002
+          protocol: UDP
+          name: testing
+        command: ["/bin/sh", "-c"]
+        args:
+        - |
+          iperf -s -u -B 224.0.0.3%net1 -i 1 -p 5002
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: iperf-client-deployment
+  namespace: multus-test
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: iperf-client
+  template:
+    metadata:
+      labels:
+        app: iperf-client
+      annotations: 
+        k8s.v1.cni.cncf.io/networks: multus-conf 
+    spec:
+      containers:
+      - name: iperf-client-container
+        image: harbor.example.com/homelab/iperf-container:latest
+        command: ["/bin/sh", "-c", "trap : TERM INT; sleep infinity & wait"]

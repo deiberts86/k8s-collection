@@ -1,0 +1,11 @@
+# Use Alpine Linux as base image for x86_64 architecture
+FROM --platform=linux/amd64 alpine:latest
+
+# Install iperf (iperf v2) package
+# Install iproute2 package for 'ip' command and net-tools package for 'netstat' command
+RUN apk update && \
+    apk add --no-cache iperf iproute2 net-tools && \
+    rm -rf /var/cache/apk/*
+
+# Execute iperf3 server by default when the container starts
+CMD ["/bin/sh"]

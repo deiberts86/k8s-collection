@@ -1,0 +1,50 @@
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: public-gateway-cert
+  namespace: istio-ingress
+spec:
+  secretName: public-gateway-tls
+  isCA: false
+  usages:
+    - server auth
+    - client auth
+  subject:
+    organizations:
+      - deibert-homelab
+  issuerRef:
+    name: kc-lab-clusterissuer
+    kind: ClusterIssuer
+  commonName: '*.homelab'
+  dnsNames:
+    - '*.homelab'
+  renewBefore: 720h  # 30 days
+---
+apiVersion: networking.istio.io/v1
+kind: Gateway
+metadata:
+  name: public-gateway
+  namespace: istio-ingress
+spec:
+  selector:
+    app: public-gateway
+    istio: public-gateway-ingressgateway
+  servers:
+    - hosts:
+        - '*.homelab'
+      port:
+        name: http
+        number: 80
+        protocol: HTTP
+      tls:
+        httpsRedirect: true
+    - hosts:
+        - '*.homelab'
+      port:
+        name: https
+        number: 443
+        protocol: HTTPS
+      tls:
+        credentialName: public-gateway-tls
+        mode: SIMPLE

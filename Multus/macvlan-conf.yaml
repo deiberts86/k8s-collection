@@ -1,0 +1,65 @@
+# Uses Secondary Interface on your VMs
+apiVersion: "k8s.cni.cncf.io/v1"
+kind: NetworkAttachmentDefinition
+metadata:
+  name: multus-conf
+  namespace: multus-test
+spec:
+  config: '{
+        "cniVersion": "0.3.0",
+        "type": "macvlan",
+        "master": "eth1",
+        "mode": "bridge",
+        "ipam": {
+            "type": "host-local",
+            "ranges": [
+                [ {
+                      "subnet": "192.168.60.0/24",
+                      "rangeStart": "192.168.60.240",
+                      "rangeEnd": "192.168.60.253",
+                      "gateway": "192.168.60.1"
+                } ]
+            ]
+        }
+    }'
+---
+# Set DHCP pool for external connections
+apiVersion: "k8s.cni.cncf.io/v1" 
+kind: NetworkAttachmentDefinition 
+metadata: 
+  name: dhcp-multus-conf
+  namespace: multus-test
+spec: 
+  config: '{ 
+      "cniVersion": "0.3.1", 
+      "type": "macvlan", 
+      "master": "eth1", 
+      "mode": "bridge", 
+      "ipam": { 
+        "type": "dhcp" 
+      }
+    }'
+---
+# Uses Secondary Interface on your VMs
+apiVersion: "k8s.cni.cncf.io/v1"
+kind: NetworkAttachmentDefinition
+metadata:
+  name: multus-conf
+  namespace: multus-test
+spec:
+  config: '{
+      "cniVersion": "0.3.0",
+      "type": "macvlan",
+      "master": "eth1",
+      "mode": "bridge",
+      "ipam": {
+        "type": "host-local",
+        "subnet": "192.168.60.0/24",
+        "rangeStart": "192.168.60.240",
+        "rangeEnd": "192.168.60.253",
+        "routes": [
+          { "dst": "0.0.0.0/0" }
+        ],
+        "gateway": "192.168.60.1"
+      }
+    }'

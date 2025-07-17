@@ -1,0 +1,5 @@
+# Client execute iperf using multicast on net1 (eth1) with UDP with 30 seconds at 5Mbps on port 5002 by interval 1
+iperf -c 224.0.0.3%net1 -u -T 32 -t 30 -b 5M -i 1 -p 5002
+
+# Server execute iperf using multicast server listener on port 5002
+iperf -s -u -B 224.0.0.3%net1 -i 1 -p 5002

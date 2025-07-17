@@ -9,9 +9,11 @@ README For:
   - [Cilium Install with RKE2](/Cilium/cilium-install.md)
   - [Cilium ServiceMesh with GatewayAPI](/Cilium/cilium-gatewayAPI.md)
   - [Cilium PrometheusMetrics Example](/Cilium/Cilium-prometheusMetrics.md)
+- [Gitea](./Gitea/install-gitea.md)
 - [Harbor](/Harbor/harbor.md)
 - [IPVS](/RKE2/IPVS/enable-ipvs.md)
 - ISTIO
+  - [Install-Istio](./Istio-ServiceMesh/install-istio.md)
   - [Blue-Green](/Istio-ServiceMesh/blue-green_deployment.md)
 - KinD (Kubernetes in Docker)
   - [KinD Cilium_simple](/KinD/Deploy-KinD-Cilium_simple.md)
@@ -23,7 +25,7 @@ README For:
 - [KubeVirt](/KubeVirt/kubevirt.md)
 - [MetalLB](/Metal-LB/install-metalLB.md)
 - [MinIO](/MinIO/minio-operator.md)
-- [Multus] InProgress
+- [Multus](./Multus/)
 - NGINX
   - [NGINX-Create-Ingress](/NGINX/helm-install-nginx.md)
   - [RKE2 NGINX-Additional-Options](/NGINX/Ingress-options.md)
@@ -39,4 +41,7 @@ README For:
   - [IPVS](/RKE2/IPVS/enable-ipvs.md)
   - [Sysctl-options-Debian](/RKE2/sysctl-settings/ubuntu-60-rke2.conf)
   - [Sysctl-options-RPM](/RKE2/sysctl-settings/rhel-60-rke2.conf)
+- Strimzi-Kafka
+  - [Install kafka](./Strimzi-Kafka/strimzi-kafka-install.md)
 - Traefik (Inprogress)
+multus-testmultus-testmultus-test
