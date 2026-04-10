@@ -1,5 +1,6 @@
 # Test Network Overlay Settings
-  * This is a swiss-armyknife pod that will be provisioned to test your cluster network
+
+- This is a swiss-armyknife pod that will be provisioned to test your cluster network
 
 ```bash
 kubectl apply -f -<<EOF
@@ -28,7 +29,7 @@ spec:
 EOF
 ```
 
-* Execute the Overlay Test
+- Execute the Overlay Test
 
 ```bash
 #!/bin/bash

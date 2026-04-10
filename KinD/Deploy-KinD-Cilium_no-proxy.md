@@ -1,4 +1,5 @@
 # Deploy KinD with Helm
+
 - Description:
   - kind is a tool for running local Kubernetes clusters using Docker container “nodes”.
 kind was primarily designed for testing Kubernetes itself, but may be used for local development or CI.
@@ -18,9 +19,10 @@ kind was primarily designed for testing Kubernetes itself, but may be used for l
   - [KinD](https://kind.sigs.k8s.io/)
   - [Cilium Kube-Proxy Replacement](https://docs.cilium.io/en/stable/network/kubernetes/kubeproxy-free/#kubeproxy-free)
 
-# INSTALL KinD
+## INSTALL KinD
 
-## Install on Linux
+### Install on Linux
+
 ```sh
 # For AMD64 / x86_64
 [ $(uname -m) = x86_64 ] && curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.23.0/kind-linux-amd64
@@ -30,7 +32,8 @@ chmod +x ./kind
 sudo mv ./kind /usr/local/bin/kind
 ```
 
-## Setup KinD
+### Setup KinD
+
 - Using Cilium CNI for this example
 
 ```sh
@@ -65,7 +68,8 @@ EOF
 kind create cluster --config=kind-config-no-proxy.yaml
 ```
 
-- You should see "Creating cluster "kind" ...
+- You should see "Creating cluster "kind"
+
 ```sh
 kubectl get nodes
 kubectl get pods -A
@@ -74,9 +78,10 @@ kubectl get --all-namespaces daemonsets | grep kube-proxy
 kubectl get --all-namespaces pods | grep kube-proxy
 kubectl get --all-namespaces configmaps |grep kube-proxy
 ```
-- You should see three nodes and all of your pods.  Note, Kubernetes will be "NotReady" state until the Cilium CNI is installed.
 
+- You should see three nodes and all of your pods.  Note, Kubernetes will be "NotReady" state until the Cilium CNI is installed.
 - Installing Cilium with Cilium CLI with Kube-Proxy replacement
+
 ```sh
 cilium install
 # Confirmation that Cilium is deployed
@@ -94,6 +99,7 @@ cilium connectivity test --connect-timeout 30s --request-timeout 10s
 ## Deploy Application for Testing KubeProxy Replacement
 
 - Deploy NGINX
+
 ```sh
 kubectl apply -f -<<EOF
 apiVersion: apps/v1
@@ -123,6 +129,7 @@ kubectl -n kube-system exec ds/cilium -- cilium service list
 ```
 
 - Install curl inside of cilium
+
 ```sh
 kubectl -n kube-system exec -ti ds/cilium -- /bin/bash
 apt update
@@ -132,6 +139,7 @@ curl http:‌//localhost:31848
 ```
 
 ## Confirm IPTables Aren't Being Used for Service Definitions
+
 - From your KinD cluster host
 
 ```sh

@@ -1,12 +1,16 @@
 # Install Gitea with Helm
+
 Requirements:
+
 - Ensure you have a DNS record built for gitea.example.com
 - Export KUBECONFIG for harvester cluster
+
   ```sh
   export KUBECONFIG=<path-to-harvester-kubeconfig>
   ```
 
 ## Create namespace
+
 ```sh
 kubectl apply -f -<<EOF
 ---
@@ -43,6 +47,7 @@ EOF
 ```
 
 ## Create Your Values File
+
 - gitea-values.yaml
 
 ```sh
@@ -118,10 +123,12 @@ EOF
 ```
 
 ## Tie It Together
+
 ```sh
 helm login -u <username> -p <password> https://harbor.example.com
 helm repo add gitea oci://<chart-path> -n gitea -f gitea_values.yaml
 ```
 
 ## Check Your Gitea Website
+
 - [Gitea Ingress](https://gitea.example.com)

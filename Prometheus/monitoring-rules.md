@@ -1,4 +1,6 @@
-# Fix for False Positive CoreDNS Alerts from Prometheus
+# Prometheus with Rancher Network Policies
+
+## Fix for False Positive CoreDNS Alerts from Prometheus
 
 ```yaml
 apiVersion: networking.k8s.io/v1
@@ -23,7 +25,7 @@ spec:
   - Ingress
 ```
 
-# Fix for False Positive Ingress NGINX Alerts from Prometheus
+## Fix for False Positive Ingress NGINX Alerts from Prometheus
 
 ```yaml
 apiVersion: networking.k8s.io/v1

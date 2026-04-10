@@ -2,13 +2,15 @@
 
 [SUSE Link](https://www.suse.com/support/kb/doc/?id=000020048)
 
-Check:
+## Check
+
 ```bash
 cat /proc/sys/fs/inotify/max_user_instances
 cat /proc/sys/fs/inotify/max_user_watches
 ```
 
-Implement:
+## Implement
+
 ```bash
 sudo sysctl fs.inotify.max_user_instances=8192
 sudo sysctl fs.inotify.max_user_watches=1048576

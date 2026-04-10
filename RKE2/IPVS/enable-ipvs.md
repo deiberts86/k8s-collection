@@ -1,39 +1,41 @@
 # IPVS for Kube-Proxy
 
-## IPVS (IP Virtual Server) versus IPTables
-Images sourced from Kubernetes.io
+IPVS for Kubernetes is going to be deprecated `<https://kubernetes.io/blog/2025/11/26/kubernetes-v1-35-sneak-peek/#deprecation-of-ipvs-mode-in-kube-proxy>`
 
+## IPVS (IP Virtual Server) versus IPTables
+
+Images sourced from Kubernetes.io
 
 ![IPTables](/RKE2/IPVS/images/iptables-img.png) | ![IPVS](/RKE2/IPVS/images/ipvs-img.png)
 
+### Kube-Proxy with IPTables mode
 
-### `Kube-Proxy with IPTables mode:`
+By default, kube-proxy in older versions of Kubernetes (before version 1.14) used IPTables as the default mode for service implementation. In this mode, kube-proxy creates IPTables rules to achieve service abstraction. Each service's cluster IP is represented as an IPTables rule. Traffic destined for the service's cluster IP is redirected to the appropriate backend pods based on IPTables rules.
 
-<p>By default, kube-proxy in older versions of Kubernetes (before version 1.14) used IPTables as the default mode for service implementation. In this mode, kube-proxy creates IPTables rules to achieve service abstraction. Each service's cluster IP is represented as an IPTables rule. Traffic destined for the service's cluster IP is redirected to the appropriate backend pods based on IPTables rules.</p>
+### Kube-Proxy with IPVS mode
 
-### `Kube-Proxy with IPVS mode:`
+Starting from Kubernetes version 1.14, IPVS support was introduced as an alternative mode for kube-proxy. In IPVS mode, kube-proxy utilizes the IPVS kernel module for load balancing instead of IPTables. IPVS provides potentially better performance and scalability for load balancing compared to IPTables due to its efficient handling of network connections.
 
-<p>Starting from Kubernetes version 1.14, IPVS support was introduced as an alternative mode for kube-proxy. In IPVS mode, kube-proxy utilizes the IPVS kernel module for load balancing instead of IPTables. IPVS provides potentially better performance and scalability for load balancing compared to IPTables due to its efficient handling of network connections.</p>
-
-### `Differences in kube-proxy modes (IPVS vs. IPTables):`
+### Differences in kube-proxy modes (IPVS vs. IPTables)
 
 Mechanism:
-<p>In IPTables mode, kube-proxy uses IPTables rules to manage traffic routing and load balancing for services.In IPVS mode, kube-proxy utilizes the IPVS kernel module directly for load balancing, which can provide improved performance and scalability.</p>
+In IPTables mode, kube-proxy uses IPTables rules to manage traffic routing and load balancing for services.In IPVS mode, kube-proxy utilizes the IPVS kernel module directly for load balancing, which can provide improved performance and scalability.
 
 Performance:
-<p>IPVS mode generally offers better performance for load balancing compared to IPTables, especially in scenarios with a large number of services or high traffic.</p>
+IPVS mode generally offers better performance for load balancing compared to IPTables, especially in scenarios with a large number of services or high traffic.
 
 Compatibility:
-<p>Not all kernel versions or configurations support IPVS, so compatibility should be checked before using IPVS mode. IPTables mode is more widely supported across various Linux distributions and kernel versions.</p>
+Not all kernel versions or configurations support IPVS, so compatibility should be checked before using IPVS mode. IPTables mode is more widely supported across various Linux distributions and kernel versions.
 
 Configuration Complexity:
 
-<p>IPVS mode might require additional kernel modules or configurations to be enabled for full functionality, whereas IPTables mode is usually more straightforward in terms of setup.</p>
+IPVS mode might require additional kernel modules or configurations to be enabled for full functionality, whereas IPTables mode is usually more straightforward in terms of setup.
 
 - Note: IPVS should definitely be used if you're using thousands of services within your clusters.
 
 ---
 References:
+
 - [IPVS vs. IPTables pt.1](https://github.com/kubernetes/kubernetes/blob/master/pkg/proxy/ipvs/README.md)
 - [IPVS vs. IPTables pt.2](https://www.tigera.io/blog/comparing-kube-proxy-modes-iptables-or-ipvs/)
 - [DNS NodeLocal Cache](https://docs.rke2.io/networking?_highlight=ipvs#nodelocal-dnscache)
@@ -43,14 +45,14 @@ References:
 - [Conntrack Module ipv4](https://cateee.net/lkddb/web-lkddb/NF_CONNTRACK_IPV4.html)
 - [Conntrack Module ipv6](https://cateee.net/lkddb/web-lkddb/NF_CONNTRACK_IPV6.html)
 
----
-Requirements:
+## Requirements
+
 - Linux Host must support IPVS
 - Must have root permissions to Linux host
 - Reconfigure kube-proxy ahead of time or reconfigure current hosts and restart Kubernetes services
 
----
-Environment tested:
+## Environment tested
+
 - VMware vSphere Environment
 - Rocky 9.3 x86_64 (amd64) Linux OS with SELinux enforced
   - 4 vCPU
@@ -134,13 +136,14 @@ modprobe nf_conntrack_ipv6
 ```
 
 ## Edit your Kube-Proxy
+
 For `k3s` or `RKE2` Kubernetes Deployment. Restart of your service for Kubernetes will needed if you `imported` your cluster into Rancher MCM.
 
 To take advantage of IPVS, you will need to edit the Kube-Proxy parameters of your `config.yaml` file. These parameters will tell Kube-Proxy to leverage IPVS instead of IPTables. There are numerous scheduler options to choose from for IPVS which includes Round Robin, Least Connect, Destination Hashing, Source Hashing, etc. Referenced documentation is available at the beginning of this readme document.
 
 Here are a few examples below:
 
-- Enforce Strict ARP with scheduler with `lc` (Least Connect) load balancing protocol. 
+- Enforce Strict ARP with scheduler with `lc` (Least Connect) load balancing protocol.
 
 ```bash
 kube-proxy-arg:

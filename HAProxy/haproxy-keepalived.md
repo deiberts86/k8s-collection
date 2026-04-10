@@ -1,7 +1,6 @@
 # HA Proxy with KeepAliveD
-<p>
+
 This is the process to setup a highly available load balancer and virtual IP (vIP) to load balance TCP connections to a RKE2 Kubernetes Cluster. Typically, KUBE-VIP would be better suited for on-prem environments but there are use cases to use HAProxy instead of having vIP and Loadbalancer services at the cluster level.
-</p>
 
 - Environment:
   - 2 lightweight VMs (Rocky9) running HAProxy
@@ -10,14 +9,17 @@ This is the process to setup a highly available load balancer and virtual IP (vI
     - 4 vCPU and 8Gi of RAM with 30Gi of Storage
 
 ## Setup HA PRoxy and KeepAliveD
+
 - On your three HA Proxy nodes, apply the provided shell scripts below.
 
 ```sh
 dnf upgrade -y; dnf install -y haproxy keepalived
 ```
-**Restart node if needed after update**
+
+### Restart node if needed after update
 
 - Setup haproxy config on each haproxy node. Adjust fields as needed before applying. Meaning your RKE2 Control Plane IPs should be added here.
+
 ```sh
 cat > /etc/haproxy/haproxy.cfg <<EOF
 global
@@ -86,8 +88,10 @@ EOF
 systemctl enable --now haproxy
 ```
 
-**KeepAlive Daemon**
+### KeepAlive Daemon
+
 - Master setup
+
 ```sh
 cat > /etc/keepalived/keepalived.conf <<EOF
 vrrp_script chk_haproxy {
@@ -126,6 +130,7 @@ systemctl enable --now keepalived
 
 - Backup setup
   - Note, lower the priority per backup
+
 ```sh
 cat > /etc/keepalived/keepalived.conf <<EOF
 vrrp_script chk_haproxy {
@@ -162,15 +167,19 @@ EOF
 systemctl enable --now keepalived
 ```
 
-**Keepalived Validation**
+### Keepalived Validation
+
 - Checking for VIP
+
 ```sh
 # From master node
 nmcli 
 # Validate you saw your VIP on your primary interface
 ```
+
 - Checking for VIP Rollover
 - Run a constant ping to the VIP and check out the latency bump when you invoke a rollover
+
 ```sh
 # From master node
 systemctl stop keepalived
@@ -181,11 +190,13 @@ nmcli
 ```
 
 ## Install RKE2
+
 - Login to your servers and do the following below to install RKE2 and leverage your new KeepAliveD VIP
 
-**Setup Repo**
+### Setup Repo
+
 ```sh
-export RKE2_MINOR=30
+export RKE2_MINOR=34
 export LINUX_MAJOR=9 # or 8 or 9 etc
 cat << EOF > /etc/yum.repos.d/rancher-rke2-1-${RKE2_MINOR}-latest.repo
 [rancher-rke2-common-latest]
@@ -206,9 +217,11 @@ EOF
 dnf install -y rke2-server
 ```
 
-**Setup config.yaml (bootstrap node or node1)**
+### Setup config.yaml (bootstrap node or node1)
+
 - adjust your `VIP` in the config.yaml and setup your `pod-security-admission-config-file`
-  - Ref for PSA file: https://ranchermanager.docs.rancher.com/reference-guides/rancher-security/psa-restricted-exemptions
+  - Ref for PSA file: <https://ranchermanager.docs.rancher.com/reference-guides/rancher-security/psa-restricted-exemptions>
+
 ```sh
 cat > /etc/rancher/rke2/config.yaml <<EOF
 tls-san:
@@ -245,7 +258,8 @@ EOF
 systemctl enable --now rke2-server
 ```
 
-**Other Nodes to add configuration**
+### Other Nodes to add configuration
+
 ```sh
 cat > /etc/rancher/rke2/config.yaml <<EOF
 server: https://VIP:9345
@@ -282,6 +296,3 @@ kubelet-arg:
 EOF
 systemctl enable --now rke2-server
 ```
-
-
-

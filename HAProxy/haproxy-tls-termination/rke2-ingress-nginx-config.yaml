@@ -11,4 +11,4 @@ spec:
         enable-access-log-for-default-backend: true
         use-proxy-protocol: true             # Enable PROXY protocol support
         real-ip-header: proxy_protocol       # Use the PROXY protocol for the real IP
-        set-real-ip-from: 192.168.30.0/24    # CIDR range of your HAProxy nodes
+        set-real-ip-from: 192.168.0.0/24    # CIDR range of your HAProxy nodes

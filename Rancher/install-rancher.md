@@ -1,8 +1,9 @@
 # Installation of Rancher MCM packages via Helm
+
 - Your PSA exemption should already be declared within the `/etc/rancher/rke2/rancher-pss.yaml` location. If not, you will need to pre-seed your namespaces.
 
-
 ## Sysctl for CIS
+
 ```sh
 cat << EOF >> /etc/sysctl.d/60-rke2.conf
 # SWAP settings
@@ -51,6 +52,7 @@ sysctl -p > /dev/null 2>&1
 ```
 
 ## Pod Security Admission Exclusion
+
 ```sh
 apiVersion: apiserver.config.k8s.io/v1
 kind: AdmissionConfiguration
@@ -111,6 +113,7 @@ plugins:
 ```
 
 ## FA POLICY
+
 ```sh
 cat <<-EOF >>"/etc/fapolicyd/rules.d/80-rke2.rules"
 allow perm=any all : dir=/var/lib/rancher/
@@ -122,8 +125,29 @@ systemctl restart fapolicyd
 ```
 
 ## INSTALL Rancher
+
+- Stable Channel
+
 ```sh
 helm repo add rancher-stable https://releases.rancher.com/server-charts/stable
 helm repo update
-helm upgrade -i rancher rancher-stable/rancher --create-namespace --namespace cattle-system --set hostname=rancher.10-7-2-11.sslip.io --set ingress.ingressClassName=cilium --version 2.8.5
+helm upgrade -i  rancher rancher-stable/rancher \
+ --create-namespace \
+ --namespace cattle-system \
+ --set hostname=rancher.homelab \
+ --set ingress.ingressClassName=cilium \
+ --version 2.13.1
+```
+
+- Latest Channel
+
+```sh
+helm repo add rancher-latest https://releases.rancher.com/server-charts/latest
+helm repo update
+helm upgrade -i  rancher rancher-latest/rancher \
+ --create-namespace \
+ --namespace cattle-system \
+ --set hostname=rancher.homelab \
+ --set ingress.ingressClassName=cilium \
+ --version 2.14.0
 ```

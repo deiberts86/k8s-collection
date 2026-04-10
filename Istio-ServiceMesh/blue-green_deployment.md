@@ -1,3 +1,5 @@
+# ISTIO Simple Blue & Green Setup
+
 ```yaml
 apiVersion: networking.istio.io/v1beta1
 kind: DestinationRule

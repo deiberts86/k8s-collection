@@ -1,6 +1,7 @@
 # KubeVirt
 
 ## References
+
 - [KubeVirt Architecture](https://kubevirt.io/user-guide/architecture/)
 - [Install KubeVirt](https://kubevirt.io/user-guide/operations/installation/)
 - [Create a Virtual Machine](https://kubevirt.io/labs/kubernetes/lab1.html)
@@ -9,7 +10,9 @@
 - [KubeVirt Lifecycle of VMs](https://kubevirt.io/user-guide/virtual_machines/lifecycle/)
 
 ---
+
 ## Setup Requirements
+
 - A bastionHost (Workstation or Jumpbox)
 - Recommended to run on Bare-Metal Servers
 - Can be run on a VM but requires a few more steps and it's also a performance penalty (nested virtualization)
@@ -25,8 +28,10 @@
 - CDI (Container Data Importer)
 
 ---
+
 ## Environment Tested
-- Vsphere 8.x 
+
+- Vsphere 8.x
 - Rocky 9.3 (Blue Onyx) with SELinux enforced
 - 4 vCPU with virtualized hardware emulation enabled within vSphere
 - 16 Gigabytes of RAM per Host
@@ -34,7 +39,9 @@
 - Tested with RKE2 six node cluster with three masters and three workers.
 
 ---
+
 ## Install `virtctl` Binary
+
 - Login to your BastionHost or Workstation where you will be periodically execute this binary along with kubectl
 
 ```bash
@@ -46,7 +53,9 @@ virtctl -version
 ```
 
 ---
+
 ## Install KubeVirt
+
 - Create your namespace ahead of time with the proper labels for PSA
   - Note: you will see a error while applying the kubevirt-operator.yaml towards the namespace.  Just ignore.
 
@@ -71,7 +80,9 @@ kubectl create -f https://github.com/kubevirt/kubevirt/releases/download/${KUBEV
 ```
 
 ---
+
 ## Create your First VM and Deploy
+
 - first-test-vm
 
 ```bash
@@ -149,12 +160,14 @@ kubectl -n linux-vms delete first-test-vm
 ```
 
 ---
+
 ## Install and Use CDI (Containerized Data Importer)
+
 - This is where you can store your images and the purpose of CDI
 - StorageClass is required for persistent data. This example will be using Longhorn
 - CDI supports `RAW` or `QCOW2` image formats
 
-#### Install CDI
+### Install CDI
 
 ```bash
 export VERSION=$(curl -Ls https://github.com/kubevirt/containerized-data-importer/releases/latest | grep -m 1 -o "v[0-9]\.[0-9]*\.[0-9]*"); echo $VERSION
@@ -162,7 +175,8 @@ kubectl create -f https://github.com/kubevirt/containerized-data-importer/releas
 kubectl create -f https://github.com/kubevirt/containerized-data-importer/releases/download/$VERSION/cdi-cr.yaml
 ```
 
-#### Create A DataVolume Towards Your StorageClass
+### Create A DataVolume Towards Your StorageClass
+
 - Note, this will create a scratch PVC to process the data before writing to the target PVC [CDI Scratch Space](https://github.com/kubevirt/containerized-data-importer/blob/main/doc/scratch-space.md)
 
 ```bash
@@ -187,7 +201,8 @@ spec:
 EOF
 ```
 
-#### Create Virtual Machine from DataVolume
+### Create Virtual Machine from DataVolume
+
 - This is to create a KubeVirt VM while using the image you just saved in the previous step.
 - Cloud-init config is towards the bottom of the script and there are numerous options on how to configure this. For example, use the `whois` apt package to leverage the `mkpasswd` for your hashed password.
 
@@ -247,7 +262,9 @@ EOF
 ```
 
 ---
-## Uninstall KubeVirt cleanly
+
+### Uninstall KubeVirt cleanly
+
 - If you don't follow this approach, you will have some heartburn removing things.
 
 ```bash

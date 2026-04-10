@@ -1,12 +1,14 @@
 # Install ArgoCD
 
 ## Requirements
+
 - Jumpbox (bastion host)
 - kubectl
 - helm
 - kubernetes clsuter
 
 ## Reference
+
 - [artifacthub.io](https://artifacthub.io/packages/helm/argo/argocd-apps)
 - [argocd docs](https://argo-cd.readthedocs.io/en/stable/)
 
@@ -26,12 +28,12 @@ server:
       nginx.ingress.kubernetes.io/ssl-passthrough: "true"
       nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
     hosts:
-      - argocd.10-7-2-155.sslip.io
+      - argocd.homelab
     https: true
     tls:
     - secretName: argo-tls
       hosts:
-      - argocd.10-7-2-155.sslip.io
+      - argocd.homelab
 configs:
   params:
     server.insecure: "false"

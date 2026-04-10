@@ -1,8 +1,9 @@
 # k8s-collection
-Repo for Kubernetes related material or apps tailored towards K3S or RKE2.
+
+Repo for Kubernetes related material or apps tailored towards K3S or RKE2. However, there are generic configurations that can be used on public cloud architecture.
 
 README For:
-- [Ambassador] InProgress
+
 - [ArgoCD](/ArgoCD/argo.md)
 - [CertManager](/CertManager/certmanager.md)
 - Cilium

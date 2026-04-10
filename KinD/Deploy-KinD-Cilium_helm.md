@@ -1,4 +1,5 @@
 # Deploy KinD with Helm
+
 - Description:
   - kind is a tool for running local Kubernetes clusters using Docker container “nodes”.
 kind was primarily designed for testing Kubernetes itself, but may be used for local development or CI.
@@ -18,9 +19,10 @@ kind was primarily designed for testing Kubernetes itself, but may be used for l
   - [KinD](https://kind.sigs.k8s.io/)
   - [Cilium with Helm](https://docs.cilium.io/en/stable/installation/k8s-install-helm/#k8s-install-helm)
 
-# INSTALL KinD
+## INSTALL KinD
 
-## Install on Linux
+### Install on Linux
+
 ```sh
 # For AMD64 / x86_64
 [ $(uname -m) = x86_64 ] && curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.23.0/kind-linux-amd64
@@ -30,7 +32,8 @@ chmod +x ./kind
 sudo mv ./kind /usr/local/bin/kind
 ```
 
-## Setup KinD
+### Setup KinD
+
 - Using Cilium CNI for this example
 
 ```sh
@@ -63,14 +66,17 @@ networking:
 EOF
 kind create cluster --config=kind-config.yaml
 ```
-- You should see "Creating cluster "kind" ...
+
+- You should see "Creating cluster "kind"
+
 ```sh
 kubectl get nodes
 kubectl get pods -A
 ```
-- You should see three nodes and all of your pods.  Note, Kubernetes will be "NotReady" state until the Cilium CNI is installed.
 
+- You should see three nodes and all of your pods.  Note, Kubernetes will be "NotReady" state until the Cilium CNI is installed.
 - Installing Cilium with Helm this time and enabling Metrics
+
 ```sh
 helm repo add cilium https://helm.cilium.io --force-update
 helm upgrade -i cilium cilium/cilium --version 1.15.6 --namespace kube-system --set operator.replicas=1
@@ -84,6 +90,7 @@ helm ls -A
 ![Cilium Status](/KinD/pictures/cilium-with-helm.png)
 
 - Cleanup older pods that was using `HOST NETWORK` from a previous Cilium Install
+
 ```sh
 kubectl get pods --all-namespaces -o custom-columns=NAMESPACE:.metadata.namespace,NAME:.metadata.name,HOSTNETWORK:.spec.hostNetwork --no-headers=true | grep '<none>' | awk '{print "-n "$1" "$2}' | xargs -L 1 kubectl delete pod
 ```

@@ -1,11 +1,13 @@
 # Install with a Yum Repository
+
 - You can have satellite server pull this repo and have servers point to a satellite provided repo.
 - Ensure to change the RKE2_MINOR version to what you want.
 - Ensure you change the LINUX_MAJOR version to what you want.
 
 ## Repositories
+
 ```sh
-export RKE2_MINOR=28
+export RKE2_MINOR=34
 export LINUX_MAJOR=9 # or 8 or 9 etc
 cat << EOF > /etc/yum.repos.d/rancher-rke2-1-${RKE2_MINOR}-latest.repo
 [rancher-rke2-common-latest]

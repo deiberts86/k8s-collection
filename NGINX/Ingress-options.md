@@ -1,7 +1,9 @@
 # RKE2 NGINX Ingress Options
-  - Note, this is downstream from the main NGINX Product.  These options should work with the standard NGINX deployment as well. Just adjust name and namespace accordingly.
 
-#### Disable Weak Ciphers
+- Note, this is downstream from the main NGINX Product.  These options should work with the standard NGINX deployment as well. Just adjust name and namespace accordingly.
+
+## Disable Weak Ciphers
+
 - Use your own Cipher suite as desired
 
 ```sh
@@ -20,7 +22,8 @@ spec:
         ssl-prefer-server-ciphers: off
 ```
 
-#### Enable Transactional Logging
+## Enable Transactional Logging
+
 - Granular logging of transactions for ingress
 
 ```sh
@@ -36,7 +39,8 @@ spec:
         enable-access-log-for-default-backend: true
 ```
 
-#### Enable HSTS Protocol
+## Enable HSTS Protocol
+
 - Turns on HTTP Strict Transfer Protocol
 
 ```sh
@@ -55,7 +59,8 @@ spec:
         hsts-preload: "false"
 ```
 
-#### Enable SSL-Passthrough
+## Enable SSL-Passthrough
+
 - Used for containers that require TLS termination at the pod directly.
 
 ```sh
@@ -73,7 +78,7 @@ spec:
         enable-ssl-passthrough: "true"
 ```
 
-#### NGINX extra controller args example:
+## NGINX extra controller args example
 
 ```sh
 apiVersion: helm.cattle.io/v1
@@ -92,7 +97,8 @@ spec:
         proxy-send-timeout: 1800
 ```
 
-#### Disable Host Ports
+## Disable Host Ports
+
 - Disable if you don't want port 80 or 443 exposed on the host directly.
 
 ```sh
@@ -107,10 +113,9 @@ spec:
       hostNetwork: false
       hostPort:
         enabled: false
-
 ```
 
-#### Enable Load Balancer Servies and Publish
+## Enable Load Balancer Servies and Publish
 
 ```sh
 apiVersion: helm.cattle.io/v1
@@ -127,7 +132,8 @@ spec:
         enabled: true
 ```
 
-#### Change Default Certificate for Ingress
+## Change Default Certificate for Ingress
+
 - Used to be a trusted certificate regardless if backend service is unreachable.
 
 ```sh
@@ -144,7 +150,8 @@ spec:
         default-ssl-certificate: default/rke2-cert-nginx
 ```
 
-#### Enable Snippets | [Snippets How-to](https://docs.nginx.com/nginx-ingress-controller/configuration/ingress-resources/advanced-configuration-with-snippets/)
+## Enable Snippets | [Snippets How-to](https://docs.nginx.com/nginx-ingress-controller/configuration/ingress-resources/advanced-configuration-with-snippets/)
+
 - This is an advance option and can have security implications.
 
 ```sh
@@ -159,7 +166,9 @@ spec:
       enableSnippets:
         enabled: true
 ```
+
 OR
+
 ```sh
 apiVersion: helm.cattle.io/v1
 kind: HelmChartConfig
@@ -172,7 +181,8 @@ spec:
       allowSnippetAnnotations: "true"
 ```
 
-#### Add Kubernetes Tolerations
+## Add Kubernetes Tolerations
+
 - Useful if you want to isolate or force deploy this application on a specific tainted node/s.
 
 ```sh
@@ -190,7 +200,7 @@ spec:
           effect: "NoSchedule"
 ```
 
-#### Enable Metrics for Prometheus Scraping
+## Enable Metrics for Prometheus Scraping
 
 ```sh
 apiVersion: helm.cattle.io/v1

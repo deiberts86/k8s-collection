@@ -1,7 +1,7 @@
 node-taint:
-  - "CriticalAddonsOnly=true:NoExecute"
+- "CriticalAddonsOnly=true:NoExecute"
 selinux: true
-profile: "cis-1.23"
+profile: "cis"
 secrets-encryption: true
 write-kubeconfig-mode: "0640"
 pod-security-admission-config-file: /etc/rancher/rke2/rancher-psact.yaml
@@ -10,10 +10,10 @@ kube-controller-manager-arg:
 - tls-min-version=VersionTLS12
 - tls-cipher-suites=TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384
 - use-service-account-credentials=true
-kube-scheduler-arg: 
+kube-scheduler-arg:
 - tls-min-version=VersionTLS12
 - tls-cipher-suites=TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384
-kube-apiserver-arg: 
+kube-apiserver-arg:
 - tls-min-version=VersionTLS12
 - tls-cipher-suites=TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384
 - audit-log-path=/var/lib/rancher/rke2/server/logs/audit.log
