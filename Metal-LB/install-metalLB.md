@@ -69,23 +69,23 @@ kubectl apply -f -<<EOF
 apiVersion: metallb.io/v1beta1
 kind: IPAddressPool
 metadata:
-  name: neuvector-pool
+  name: <app-pool>
   namespace: metallb-system
 spec:
   addresses:
-    - 192.168.1.100-192.168.1.105
+    - 192.168.1.100-192.168.1.105 #(example IP pool range)
 # lock down to a specific namespace (recommended approach)
   serviceAllocation:
     namespaces:
-      - cattle-neuvector-system
+      - <namespace>
 ---
 apiVersion: metallb.io/v1beta1
 kind: L2Advertisement
 metadata:
-  name: neuvector-pool-l2
+  name: <app-pool-l2>
   namespace: metallb-system
 spec:
   ipAddressPools:
-  - neuvector-pool
+  - <app-pool>
 EOF
 ```
