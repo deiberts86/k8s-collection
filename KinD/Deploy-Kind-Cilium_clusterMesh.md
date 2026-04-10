@@ -1,4 +1,5 @@
 # Deploy KinD Cilium Muliti-Cluster with ClusterMesh
+
 - Description:
   - kind is a tool for running local Kubernetes clusters using Docker container “nodes”.
 kind was primarily designed for testing Kubernetes itself, but may be used for local development or CI.
@@ -18,9 +19,10 @@ kind was primarily designed for testing Kubernetes itself, but may be used for l
   - [KinD](https://kind.sigs.k8s.io/)
   - [Cilium ClusterMesh](https://docs.cilium.io/en/stable/network/clustermesh/clustermesh/)
 
-# INSTALL KinD
+## INSTALL KinD
 
-## Install on Linux
+### Install on Linux
+
 ```sh
 # For AMD64 / x86_64
 [ $(uname -m) = x86_64 ] && curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.23.0/kind-linux-amd64
@@ -30,7 +32,8 @@ chmod +x ./kind
 sudo mv ./kind /usr/local/bin/kind
 ```
 
-## Setup KinD
+### Setup KinD
+
 - Using Cilium CNI for this example
 - NOTE: You might need to adjust sysctl controls for fs.inotify.max_user_watchers
 
@@ -97,6 +100,7 @@ export CLUSTER2=kind-alliance-sector-02
 - You should see two Kubernetes clusters and the default cluster selected would be the last one implemented (number 2). Ensure you exported your Kubeconfig contexts
 
 ## Installing Cilium with encryption and inherit CA cert from first cluster
+
 ```sh
 cilium install --context $CLUSTER1 --cluster-name sector-01 --cluster-id 1 --encryption wireguard --helm-set "l7Proxy=false"
 cilium status --context $CLUSTER1
@@ -107,6 +111,7 @@ cilium status --context $CLUSTER2
 ![cilium-ClusterMesh_status1](/KinD/pictures/cilium-clusterMesh_status1.png)
 
 ## Enabling the Cluster Mesh
+
 ```sh
 cilium clustermesh enable --service-type NodePort --context $CLUSTER1
 cilium clustermesh enable --service-type NodePort --context $CLUSTER2
@@ -127,6 +132,7 @@ cilium clustermesh status --context $CLUSTER1 --wait
 ![cilium-ClusterMesh_status3](/KinD/pictures/cilium-clusterMesh_status3.png)
 
 ## Deploy Demo App
+
 ```sh
 kubectl apply --context $CLUSTER1 -f https://raw.githubusercontent.com/cilium/cilium/HEAD/examples/kubernetes/clustermesh/global-service-example/cluster1.yaml
 kubectl apply --context $CLUSTER2 -f https://raw.githubusercontent.com/cilium/cilium/HEAD/examples/kubernetes/clustermesh/global-service-example/cluster2.yaml
@@ -138,6 +144,7 @@ kubectl --context $CLUSTER2 exec -ti deployment/x-wing -- curl rebel-base
 ```
 
 ## Setup Cluster Affinity
+
 ```sh
 # Update Annotations for Cluster 1 to use an Affinity of "local"
 kubectl --context=$CLUSTER1 annotate service rebel-base service.cilium.io/affinity=local --overwrite

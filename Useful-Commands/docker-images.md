@@ -1,4 +1,7 @@
-# Docker Images (Locally saved images)
+# Save Images and Push to Container Registry
+
+## Docker Images (Locally saved images)
+
 - Requirements
   - Docker Daemon or Podman
   - pigz (for better computation and compression)
@@ -11,14 +14,15 @@ docker save $(docker images --format "{{.Repository}}:{{.Tag}}" | grep '^docker.
 pigz -dc images.tar.gz | docker load
 ```
 
-# Push to registry (like Harbor, Artifactory, etc.)
+## Push to registry (like Harbor, Artifactory, etc.)
+
 - grepping for image repository starting with `docker.io` and pushing to a harbor registry
 
 ```sh
-docker login habor.10-7-2-65.sslip.io -u admin
+docker login habor.homelab -u admin
 docker images --format "{{.Repository}}:{{.Tag}}" | grep "^docker.io/" | while IFS=':' read -r repo tag; do
     image_name=$(basename $repo)
-    new_repo="harbor.10-7-2-65.sslip.io/docker.io/$image_name"
+    new_repo="harbor.homelab/docker.io/$image_name"
     new_tag="$tag"
     echo "Tagging: $repo:$tag -> $new_repo:$new_tag"
     if docker tag "$repo:$tag" "$new_repo:$new_tag"; then

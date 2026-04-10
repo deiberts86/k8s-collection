@@ -1,6 +1,7 @@
 # Useful Commands Towards Rancher Application
 
-## Rebuild Bootstrap Password 
+## Rebuild Bootstrap Password
+
 - Useful if it's missing due to initial secret being removed from numerous retries.
 
 ```sh

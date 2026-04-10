@@ -36,9 +36,9 @@ backend kubernetes_ingress
     mode http
     balance leastconn
     http-check expect status 200
-    server k8s-nginx-1 192.168.30.226:443 check ssl verify none alpn h2,http/1.1 send-proxy
-    server k8s-nginx-2 192.168.30.186:443 check ssl verify none alpn h2,http/1.1 send-proxy
-    server k8s-nginx-3 192.168.30.91:443 check ssl verify none alpn h2,http/1.1 send-proxy
+    server k8s-nginx-1 <server#1>:443 check ssl verify none alpn h2,http/1.1 send-proxy
+    server k8s-nginx-2 <server#2>:443 check ssl verify none alpn h2,http/1.1 send-proxy
+    server k8s-nginx-3 <server#3>:443 check ssl verify none alpn h2,http/1.1 send-proxy
 
 backend kubernetes_api_server
     mode tcp
@@ -46,6 +46,6 @@ backend kubernetes_api_server
     option tcp-check
     balance roundrobin
     default-server inter 10s downinter 5s rise 2 fall 2 slowstart 60s
-    server k8s-api-1 192.168.30.226:6443 check
-    server k8s-api-2 192.168.30.186:6443 check
-    server k8s-api-3 192.168.30.91:6443 check
+    server k8s-api-1 <server#1>:6443 check
+    server k8s-api-2 <server#2>:6443 check
+    server k8s-api-3 <server#3>:6443 check

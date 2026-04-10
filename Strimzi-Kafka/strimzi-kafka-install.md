@@ -1,15 +1,15 @@
 # Strimzi Kafka
+
 - Requirements:
   - Prep your kafka configuration for your yaml.
 
 - Processes:
-  - Kafka Producer > Kafka Broker > Kafka consumer > Knative? 
+  - Kafka Producer > Kafka Broker > Kafka consumer > Knative?
 
 - Reference:
   - [Strimzi Documentation](https://strimzi.io/docs/operators/latest/deploying#deploying-cluster-operator-helm-chart-str)
   - [Kafka Documentation](https://kafka.apache.org/documentation/)
   - [Strimzi Kafka Cluster Example](https://github.com/utkarsh-devops/strimzi-kafka-operator/blob/main/examples/systems-kafka/kafka.yaml)
-
 
 ## Install Strimzi Kafka (HELM)
 
@@ -134,4 +134,3 @@ spec:
     topicRegex: ".*"
     groupRegex: ".*"
 ```
-

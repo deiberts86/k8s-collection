@@ -1,18 +1,20 @@
 # Pull and Push Rancher Related Containers to Private Repository
+
 - Note: This is restrictive and really meant for deployments that doesn't have internet access. Otherwise, leverage a proxy-cache.
 
-## Requirements:
+## Requirements
+
 - Required software:
-  - skopeo 
+  - skopeo
 - login to jumpbox (bastion host) and sudo su your account to be root.
   - Ensure you have enough disk space
   - You will need to change your Default Registry and setup registries.yaml files to point your dedicated harbor repo. This will be done after your images makes it to the repository of your choice.
---------
 
-## `Prep and Pull Image Lists`
+## Prep and Pull Image Lists
+
 ```sh
-export RKE2_VER=v1.25.16+rke2r1
-export RANCHER_VER=v2.8.5
+export RKE2_VER=v1.34.4+rke2r1
+export RANCHER_VER=v2.13.1
 export RKE2_VER_DASH=`echo $RKE2_VER | sed s/+/-/`
 mkdir -p /var/tmp/rancher-temp
 cd /var/tmp/rancher-temp
@@ -36,6 +38,7 @@ skopeo login --tls-verify=false harbor.registry.com
 ```console
 vi /var/tmp/rancher-temp/pull-rancher-images.sh
 ```
+
 - paste contents below and save file
 
 ```sh
@@ -59,5 +62,6 @@ chmod +x /var/tmp/rancher-temp/pull-rancher-images.sh
 # Execute Script (note: this will take a while)
 sh /var/tmp/rancher-temp/pull-rancher-images.sh
 ```
+
 - Ideally run this either first thing in the morning or late in the afternoon
 - Check the Harbor repo you're pointing to and ensure that your files shows up properly.

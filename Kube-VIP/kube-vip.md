@@ -3,6 +3,7 @@
 ## Install Script via Manifest
 
 Requirements:
+
 - kubectl
 - active kubernetes cluster with the proper kubeconfig | context (what cluster do you want to deploy to?)
 
@@ -230,6 +231,7 @@ EOF
 ## Install with Helm
 
 Requirements:
+
 - Helm
 - active kubernetes cluster with the proper kubeconfig | context (what cluster do you want to deploy to?)
 
@@ -240,7 +242,7 @@ References:
 ---
 Prepare your values.yaml files:
 
-#### Kube-VIP Daemonset Values
+### Kube-VIP Daemonset Values
 
 ```bash
 cat > kube-vip_daemonset-values.yaml <<EOF
@@ -392,7 +394,8 @@ affinity:
 EOF
 ```
 
-#### Put it all together
+### Put it all together
+
 Note, create your configmap ahead of time that's referenced in the instructions above.  Doing so will allow for faster deployment of load balancer if needed.
 
 - With Internet Access:
@@ -407,6 +410,7 @@ helm ls -A
 
 - AirGap:
   - Note, have not tested this part as of yet.
+
 ```bash
 curl -L -o kube-vip-0.4.4.tgz https://github.com/kube-vip/helm-charts/releases/download/kube-vip-0.4.4/kube-vip-0.4.4.tgz
 ```

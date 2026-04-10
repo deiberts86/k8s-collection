@@ -1,4 +1,7 @@
-# config.yaml for RKE2-Servers
+# RKE2 Configuration Examples
+
+## config.yaml for RKE2-Servers
+
 ```yaml
 tls-san:
   - YourVIPAddressHere
@@ -35,7 +38,7 @@ kubelet-arg:
 - protect-kernel-defaults=true
 ```
 
-# config.yaml for RKE2-Agents
+## config.yaml for RKE2-Agents
 
 ```yaml
 server: https://vipaddr.local:9345
@@ -51,7 +54,7 @@ kubelet-arg:
 write-kube-config-mode: 0640
 ```
 
-# Your pod Security Admission Configuration
+## Your pod Security Admission Configuration
 
 ```yaml
 apiVersion: apiserver.config.k8s.io/v1
@@ -112,7 +115,8 @@ plugins:
                    tigera-operator]
 ```
 
-# Audit Policy
+## Audit Policy
+
 - add more if necessary.  This is for STIG
 
 ```yaml

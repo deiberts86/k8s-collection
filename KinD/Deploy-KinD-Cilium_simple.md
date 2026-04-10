@@ -1,4 +1,5 @@
 # Deploy KinD with Cilium Simple Setup (Cilium CLI)
+
 - Description:
   - kind is a tool for running local Kubernetes clusters using Docker container “nodes”.
 kind was primarily designed for testing Kubernetes itself, but may be used for local development or CI.
@@ -17,9 +18,10 @@ kind was primarily designed for testing Kubernetes itself, but may be used for l
   - [KinD](https://kind.sigs.k8s.io/)
   - [Cilium CLI Install](https://docs.cilium.io/en/stable/gettingstarted/k8s-install-default/)
 
-# INSTALL KinD
+## INSTALL KinD
 
-## Install on Linux
+### Install on Linux
+
 ```sh
 # For AMD64 / x86_64
 [ $(uname -m) = x86_64 ] && curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.23.0/kind-linux-amd64
@@ -29,7 +31,8 @@ chmod +x ./kind
 sudo mv ./kind /usr/local/bin/kind
 ```
 
-## Setup KinD
+### Setup KinD
+
 - Using Cilium CNI for this example
 
 ```sh
@@ -58,11 +61,14 @@ networking:
 EOF
 kind create cluster --config=kind-config.yaml
 ```
-- You should see "Creating cluster "kind" ...
+
+- You should see "Creating cluster "kind"
+
 ```sh
 kubectl get nodes
 kubectl get pods -A
 ```
+
 - You should see three nodes and all of your pods.  Note, Kubernetes will be "NotReady" state until the Cilium CNI is installed.
 
 ```sh
@@ -72,9 +78,11 @@ cilium hubble enable --ui
 # Confirmation that Cilium, Cilium-Operator, and Hubble are Happy
 cilium status
 ```
+
 ![Cilium Status](/KinD/pictures/cilium-with-ciliumcli.png)
 
 - Cilium Connectivity Validation Testing
+
 ```sh
 cilium connectivity test --request-timeout 30s --connect-timeout 10s
 ```

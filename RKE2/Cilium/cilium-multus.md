@@ -1,5 +1,6 @@
 # RKE2 Cilium with Multus
-- References: 
+
+- References:
   - [RKE2 Docs](https://docs.rke2.io/)
 
 - Requirements:
@@ -9,6 +10,7 @@
   - Whenever you make a change to Cilium you should `rollout restart` all Cilium related pods
 
 ## Systems Prep
+
 ```sh
 echo "disable and stop firewalld and nm-cloud-setup services"
 systemctl disable --now firewalld
@@ -72,8 +74,9 @@ sysctl -p > /dev/null 2>&1
 ```
 
 ## Add RKE2 Repo
+
 ```sh
-export RKE2_MINOR=28
+export RKE2_MINOR=34
 export LINUX_MAJOR=9 # or 8 or 9 etc
 cat << EOF > /etc/yum.repos.d/rancher-rke2-1-${RKE2_MINOR}-latest.repo
 [rancher-rke2-common-latest]
@@ -93,6 +96,7 @@ EOF
 ```
 
 ## Add Rancher Pod Security Admission and Audit Policy
+
 ```sh
 mkdir -p /etc/rancher/rke2/
 cat > /etc/rancher/rke2/rancher-psact.yaml <<EOF
@@ -171,6 +175,7 @@ EOF
 ```
 
 ## Configuration YAML for RKE2 bootstrap node
+
 ```sh
 export TOKEN=$(openssl rand -hex 16)
 export VIPSAN=vip.192-168-30-55.sslip.io
@@ -231,6 +236,7 @@ tls-san:
 - $VIPSAN
 - $VIP
 EOF
+
 mkdir -p /var/lib/rancher/rke2/server/manifests/
 cat << EOF >  /var/lib/rancher/rke2/server/manifests/rke2-cilium-config.yaml
 apiVersion: helm.cattle.io/v1
@@ -290,15 +296,17 @@ EOF
 ```
 
 ## Start RKE2 Server
+
 ```sh
 systemctl enable --now rke2-server 
 ```
 
 ## RKE2 Agents
+
 - Same process as before but the `/etc/rancher/rke2/config.yaml` will be different.
 
 ```sh
-export VIPSAN=vip.192-168-30-55.sslip.io
+export VIPSAN=vip.rke2.homelab
 export NODEIP=$(nmcli -g IP4.ADDRESS device show eth0 | head -n 1 | cut -d'/' -f1)
 export NODEEXTIP=$(nmcli -g IP4.ADDRESS device show eth0 | head -n 1 | cut -d'/' -f1)
 server: "https://$VIPSAN:9345"
@@ -306,7 +314,7 @@ server: "https://$VIPSAN:9345"
 token: "YOURTOKENHERE"
 node-ip: "$NODEIP"
 node-external-ip: "$NODEEXTIP"
-profile: "cis-1.23"
+profile: "cis"
 selinux: true
 kube-apiserver-arg:
 - authorization-mode=RBAC,Node
@@ -317,7 +325,9 @@ kubelet-arg:
 ```
 
 ## Helpful Commands
-- Leverage Cilium 
+
+- Leverage Cilium
+
 ```sh
 # Restart Cilium related pods
 kubectl -n kube-system rollout restart deploy/cilium-operator; kubectl -n kube-system rollout restart ds/cilium; kubectl -n kube-system rollout restart ds/envoy

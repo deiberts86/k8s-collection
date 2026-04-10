@@ -4,27 +4,27 @@ NOTICE: MINIO HAS STOPPED SUPPORTING THIS APPLICATION
 
 - REF: <https://github.com/minio/minio>
 
-## **Tools needed**
+## Tools needed
 
 - kubectl
 - helm
 - yq ["Download **yq** here from Github"](https://github.com/mikefarah/yq/#install)
   - You can also do a "snap install yq" if on Ubuntu Systems
 
-### **Pull Charts**
+## Pull Charts
 
 ```sh
 curl -O https://raw.githubusercontent.com/minio/operator/master/helm-releases/operator-5.0.9.tgz
 curl -O https://raw.githubusercontent.com/minio/operator/master/helm-releases/tenant-5.0.9.tgz
 ```
 
-### **Deploy Operator**
+## Deploy Operator
 
 ```sh
  helm upgrade -i minio-operator ./operator-5.0.9.tgz --namespace minio-operator --create-namespace
 ```
 
-### **Configure Operator**
+### Configure Operator
 
 - Only use `yq` if you need to adjust the service to NodePort
 
@@ -88,7 +88,7 @@ spec:
       secretName: string
 ```
 
-### **Grab Your JWT Token**
+### Grab Your JWT Token
 
 - Export the following environment variable with kubectl command to retrieve JWT token
 
@@ -97,12 +97,12 @@ export SA_TOKEN=$(kubectl -n minio-operator  get secret console-sa-secret -o jso
 echo $SA_TOKEN
 ```
 
-### **Navigate to your MinIO Operator site through your ingress**
+### Navigate to your MinIO Operator site through your ingress
 
 - Go to your new ingress site you created and it should look something like this: `https://fqdn-site-name/`
   - Note: You should see a pretty nice webpage and you should have only one field to put in the JWT Token
 
-### **OPTIONAL Install of Tenant**
+### OPTIONAL Install of Tenant
 
 - Note: `Tenant-ns` is whatever you want it to be.  If you want to make more tenants, simply re-run this command but ensure the names are not identical and optionally choose different namespace as well.
 

@@ -1,5 +1,7 @@
-# Tools Images
---------------
+# Rancher Core Libraries
+
+## Tools Images
+
 - Copy the contents below to bastionhost VM (jumpbox) in /var/tmp/rancher-temp/tools-images.txt
   - Add any other images you want with the name:tag format
 
@@ -10,11 +12,12 @@ ghcr.io/kube-vip/kube-vip-cloud-provider:v0.0.9
 EOF
 ```
 
-### `Create /bin/bash Script`
+## `Create /bin/bash Script`
 
 ```console
 vi /var/tmp/rancher-temp/pull-tools-images.sh
 ```
+
 - paste contents below and save file
 
 ```sh
@@ -29,6 +32,7 @@ for i in `cat /var/tmp/rancher-temp/tool-images.txt`; do
   echo ""
 done
 ```
+
 ### `Execute Shell Script`
 
 ```sh

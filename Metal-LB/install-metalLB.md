@@ -1,4 +1,5 @@
-# Install and Configure metalLB
+# Kubernetes MetalLB
+
 - References:
   - [Install-metalLB](https://metallb.universe.tf/installation/)
   - [Layer2-Config/advertisement](https://metallb.universe.tf/configuration/_advanced_l2_configuration/)
@@ -58,7 +59,8 @@ spec:
 EOF
 ```
 
-#### Create a secondary Pool
+### Create a secondary Pool
+
 - Example: For a Range of IP addresses for a particular namespace
 
 ```bash

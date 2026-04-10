@@ -1,4 +1,6 @@
-# Install `cert-manager`
+# Cert-Manager
+
+## Install Cert-Manager
 
 ```sh
 helm repo add jetstack https://charts.jetstack.io --force-update
@@ -6,12 +8,12 @@ helm upgrade -i \
   cert-manager jetstack/cert-manager \
   --namespace cert-manager \
   --create-namespace \
-  --version v1.14.4 \
+  --version v1.19.4 \
   --set enable.crds=true \
   --set "extraArgs={--feature-gates=ExperimentalGatewayAPISupport=true}"
 ```
 
-# Create CA Issuer Certificates
+## Create CA Issuer Certificates
 
 ```sh
 kubectl apply -f -<<EOF
@@ -92,17 +94,21 @@ spec:
     group: cert-manager.io
 ```
 
-### Update your CA Cert on your hosts for Insecure Registry to work within Rancher for pulling images locally.
+### Update your CA Cert on your hosts for Insecure Registry
+
+- This is to work within Rancher for pulling images locally
 
 1. Login to your BastionHost server (jumpbox)
 2. Export your kubeconfig and validate you're using the right configuration context
 3. execute this command to get your `cert-manager` generated CA certificate
+
    ```sh
    cd /home/ranchuser
    sudo -s
    export KUBECONFIG=${Path/to/your/kubeconfig}
    kubectl -n cert-manager get secret root-secret -o jsonpath='{.data.tls\.crt}' | base64 -d | tee ca-cert.pem
    ```
+
 4. Copy that configuration and run an ansible job to update your ca-trust store on all servers.
 
 `Update to a Trusted CA signed certificate in the future and you woudn't need to do these steps above.`
