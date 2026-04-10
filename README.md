@@ -2,31 +2,46 @@
 
 Repo for Kubernetes related material or apps tailored towards K3S or RKE2. However, there are generic configurations that can be used on public cloud architecture.
 
-README For:
+READMEs for the following applications below:
 
-- [ArgoCD](/ArgoCD/argo.md)
-- [CertManager](/CertManager/certmanager.md)
+- ArgoCD
+  - [ArgoCD Setup](/ArgoCD/argo.md)
+- Cert-Manager
+  - [CertManager Setup](/CertManager/certmanager.md)
 - Cilium
   - [Cilium Install with RKE2](/Cilium/cilium-install.md)
   - [Cilium ServiceMesh with GatewayAPI](/Cilium/cilium-gatewayAPI.md)
   - [Cilium PrometheusMetrics Example](/Cilium/Cilium-prometheusMetrics.md)
-- [Gitea](./Gitea/install-gitea.md)
-- [Harbor](/Harbor/harbor.md)
-- [IPVS](/RKE2/IPVS/enable-ipvs.md)
+- Gitea
+  - [Gitea Setup](./Gitea/install-gitea.md)
+- Harbor
+  - [Harbor Setup](/Harbor/harbor.md)
+- Hauler
+  - [Hauler Setup](/Hauler/hauler.md)
+- IPVS
+  - [IPVS Setup](/RKE2/IPVS/enable-ipvs.md)
 - ISTIO
-  - [Install-Istio](./Istio-ServiceMesh/install-istio.md)
-  - [Blue-Green](/Istio-ServiceMesh/blue-green_deployment.md)
+  - [ISTIO Setup](./Istio-ServiceMesh/install-istio.md)
+  - [Blue-Green Deployment](/Istio-ServiceMesh/blue-green_deployment.md)
+- Kiali
+  - [Kiali Setup](/Kiali/kiali.md)
 - KinD (Kubernetes in Docker)
   - [KinD Cilium_simple](/KinD/Deploy-KinD-Cilium_simple.md)
   - [KinD Cilium_helm](/KinD/Deploy-KinD-Cilium_helm.md)
   - [KinD Cilium_no-proxy](/KinD/Deploy-KinD-Cilium_no-proxy.md)
   - [KinD Cilium_ClusterMesh](/KinD/Deploy-Kind-Cilium_clusterMesh.md)
-- [Kubeseal](/Kubeseal/kubeseal.md)
-- [KubeVIP](/Kube-VIP/kube-vip.md)
-- [KubeVirt](/KubeVirt/kubevirt.md)
-- [MetalLB](/Metal-LB/install-metalLB.md)
-- [MinIO](/MinIO/minio-operator.md)
-- [Multus](./Multus/)
+- Kubeseal
+  - [Kubeseal Setup](/Kubeseal/kubeseal.md)
+- KubeVIP
+  - [KubeVIP Setup](/Kube-VIP/kube-vip.md)
+- KubeVIRT
+  - [KubeVirt Setup](/KubeVirt/kubevirt.md)
+- MetalLB
+  - [MetalLB Setup](/Metal-LB/install-metalLB.md)
+- MinIO
+  - [MinIO](/MinIO/minio-operator.md)
+- Multus CNI
+  - [Multus CNI Setup](./Multus/)
 - NGINX
   - [NGINX-Create-Ingress](/NGINX/helm-install-nginx.md)
   - [RKE2 NGINX-Additional-Options](/NGINX/Ingress-options.md)
@@ -34,6 +49,9 @@ README For:
   - [AlertManager Emailer](/Prometheus/alertmanager/gmail-alertmanager.yaml)
   - [Monitoring Rules](/Prometheus/monitoring-rules.md)
 - Rancher
+  - [Install Rancher MCM](/Rancher/install-rancher.md)
+  - [Helpful Commands](/Rancher/helpful-commands.md)
+  - [Demo Rancher Pets](/Rancher/demo-rancher-pets.md)
   - [Rancher Airgap Images](/Rancher/rancher-pull-images.md)
   - [Grab Core Libraries](/Rancher/core-libraries_images.md)
 - RKE2
@@ -44,4 +62,5 @@ README For:
   - [Sysctl-options-RPM](/RKE2/sysctl-settings/rhel-60-rke2.conf)
 - Strimzi-Kafka
   - [Install kafka](./Strimzi-Kafka/strimzi-kafka-install.md)
-- [Traefik](./Traefik/Enable-Dashboard/)
+- Traefik
+  - [Traefik Setup](./Traefik/Enable-Dashboard/)
