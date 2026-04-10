@@ -1,4 +1,5 @@
 # Cilium
+
 - This is to install Cilium with RKE2
 
 - Requirements:
@@ -8,6 +9,7 @@
   - Whenever you make a change to Cilium you should `rollout restart` all Cilium related pods
 
 ## Systems Prep
+
 ```sh
 echo "disable and stop firewalld and nm-cloud-setup services"
 systemctl disable --now firewalld
@@ -150,6 +152,7 @@ EOF
 ```
 
 - RKE2 config.yaml
+
 ```sh
 export TOKEN=$(openssl rand -hex 16)
 export VIPSAN=<VIP-SAN>
@@ -209,6 +212,7 @@ tls-san:
 ```
 
 - rke2-cilium-config.yaml
+
 ```sh
 mkdir -p /var/lib/rancher/rke2/server/manifests/
 cat << EOF >  /var/lib/rancher/rke2/server/manifests/rke2-cilium-config.yaml
@@ -278,13 +282,14 @@ spec:
     rollOutCiliumPods: true
 ```
 
-
 ## Start RKE2 Server
+
 ```sh
 systemctl enable --now rke2-server 
 ```
 
 ## RKE2 Agents
+
 - Same process as before but the `/etc/rancher/rke2/config.yaml` will be different.
 
 ```sh
