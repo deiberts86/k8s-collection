@@ -7,23 +7,23 @@ metadata:
 spec:
   ingressClassName: traefik
   rules:
-    - host: traefik.10-7-2-13.sslip.io
-      http:
-        paths:
-          - backend:
-              service:
-                name: traefik-dashboard-service
-                port:
-                  number: 9000
-            path: /api
-            pathType: Prefix
-    - host: traefik.10-7-2-13.sslip.io
-      http:
-        paths:
-          - backend:
-              service:
-                name: traefik-dashboard-service
-                port:
-                  number: 9000
-            path: /dashboard
-            pathType: Prefix
+  - host: traefik.homelab
+    http:
+      paths:
+      - backend:
+          service:
+            name: traefik-dashboard-service
+            port:
+              number: 9000
+        path: /api
+        pathType: Prefix
+  - host: traefik.homelab
+    http:
+      paths:
+      - backend:
+          service:
+            name: traefik-dashboard-service
+            port:
+              number: 9000
+        path: /dashboard
+        pathType: Prefix

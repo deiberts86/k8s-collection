@@ -20,7 +20,7 @@ helm upgrade -i strimzi-kafka-operator strimzi/strimzi-kafka-operator --create-n
 
 ## Install Kafka Cluster with Strimzi Operator
 
-```sh
+```yaml
 apiVersion: kafka.strimzi.io/v1beta2
 kind: KafkaUser
 metadata:

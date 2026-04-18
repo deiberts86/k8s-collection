@@ -6,7 +6,7 @@
 
 - Use your own Cipher suite as desired
 
-```sh
+```yaml
 apiVersion: helm.cattle.io/v1
 kind: HelmChartConfig
 metadata:
@@ -26,7 +26,7 @@ spec:
 
 - Granular logging of transactions for ingress
 
-```sh
+```yaml
 apiVersion: helm.cattle.io/v1
 kind: HelmChartConfig
 metadata:
@@ -43,7 +43,7 @@ spec:
 
 - Turns on HTTP Strict Transfer Protocol
 
-```sh
+```yaml
 apiVersion: helm.cattle.io/v1
 kind: HelmChartConfig
 metadata:
@@ -63,7 +63,7 @@ spec:
 
 - Used for containers that require TLS termination at the pod directly.
 
-```sh
+```yaml
 apiVersion: helm.cattle.io/v1
 kind: HelmChartConfig
 metadata:
@@ -80,7 +80,7 @@ spec:
 
 ## NGINX extra controller args example
 
-```sh
+```yaml
 apiVersion: helm.cattle.io/v1
 kind: HelmChartConfig
 metadata:
@@ -101,7 +101,7 @@ spec:
 
 - Disable if you don't want port 80 or 443 exposed on the host directly.
 
-```sh
+```yaml
 apiVersion: helm.cattle.io/v1
 kind: HelmChartConfig
 metadata:
@@ -117,7 +117,7 @@ spec:
 
 ## Enable Load Balancer Servies and Publish
 
-```sh
+```yaml
 apiVersion: helm.cattle.io/v1
 kind: HelmChartConfig
 metadata:
@@ -136,7 +136,7 @@ spec:
 
 - Used to be a trusted certificate regardless if backend service is unreachable.
 
-```sh
+```yaml
 apiVersion: helm.cattle.io/v1
 kind: HelmChartConfig
 metadata:
@@ -154,7 +154,7 @@ spec:
 
 - This is an advance option and can have security implications.
 
-```sh
+```yaml
 apiVersion: helm.cattle.io/v1
 kind: HelmChartConfig
 metadata:
@@ -169,7 +169,7 @@ spec:
 
 OR
 
-```sh
+```yaml
 apiVersion: helm.cattle.io/v1
 kind: HelmChartConfig
 metadata:
@@ -185,7 +185,7 @@ spec:
 
 - Useful if you want to isolate or force deploy this application on a specific tainted node/s.
 
-```sh
+```yaml
 apiVersion: helm.cattle.io/v1
 kind: HelmChartConfig
 metadata:
@@ -202,7 +202,7 @@ spec:
 
 ## Enable Metrics for Prometheus Scraping
 
-```sh
+```yaml
 apiVersion: helm.cattle.io/v1
 kind: HelmChartConfig
 metadata:

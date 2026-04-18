@@ -6,10 +6,10 @@ metadata:
   namespace: traefik
 spec:
   entryPoints:
-    - web
+  - web
   routes:
-    - match: Host(`traefik.10-7-2-13.sslip.io`) && (PathPrefix(`/dashboard`) || PathPrefix(`/api`))
-      kind: Rule
-      services:
-        - kind: TraefikService
-          name: api@internal
+  - match: Host(`traefik.homelab`) && (PathPrefix(`/dashboard`) || PathPrefix(`/api`))
+    kind: Rule
+    services:
+    - kind: TraefikService
+      name: api@internal
