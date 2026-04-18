@@ -112,3 +112,6 @@ helm upgrade -i rustfs rustfs/rustfs \
   -n rustfs --create-namespace \
   -f values.yaml
 ```
+
+- After installation, use your secret that you made for the username and password you created for the initial login.
+- Once you login, you can follow this [ref here](https://docs.rustfs.com/management/bucket/creation.html)
