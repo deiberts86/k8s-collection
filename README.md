@@ -39,7 +39,7 @@ READMEs for the following applications below:
 - MetalLB
   - [MetalLB Setup](/Metal-LB/install-metalLB.md)
 - MinIO
-  - [MinIO](/MinIO/minio-operator.md)
+  - [MinIO](/MinIO/minio-operator.md) (Retired)
 - Multus CNI
   - [Multus CNI Setup](./Multus/)
 - NGINX
@@ -57,9 +57,11 @@ READMEs for the following applications below:
 - RKE2
   - [Configuration Files](/RKE2/configuration-settings/configuration.md)
   - [ETCD](/RKE2/ETCD/etcd-commands.md)
-  - [IPVS](/RKE2/IPVS/enable-ipvs.md)
+  - [IPVS](/RKE2/IPVS/enable-ipvs.md) (Retired)
   - [Sysctl-options-Debian](/RKE2/sysctl-settings/ubuntu-60-rke2.conf)
   - [Sysctl-options-RPM](/RKE2/sysctl-settings/rhel-60-rke2.conf)
+- RustFS
+  - [Install RustFS](/RustFS/install-rustfs.md)
 - Strimzi-Kafka
   - [Install kafka](./Strimzi-Kafka/strimzi-kafka-install.md)
 - Traefik
