@@ -88,7 +88,7 @@
 
 11. (SKIP FOR NOW) Add your network policy for your ingress. Advanced Options... ValidationWebHook error observed. Networking needs to be locked down.
 
-    ```sh
+    ```yaml
     apiVersion: networking.k8s.io/v1
     kind: NetworkPolicy
     metadata:

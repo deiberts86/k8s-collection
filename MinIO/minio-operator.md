@@ -49,7 +49,7 @@ yq -i -e '.spec.replicas |= 1' operator.yaml
   - Note: Using Self-Signed Certificates but custom certs can be used
   - Install Cert-manager and create a self-signed Cluster issuer CA
 
-```sh
+```yaml
 apiVersion: cert-manager.io/v1
 kind: ClusterIssuer
 metadata:
@@ -61,7 +61,7 @@ spec:
 
 - Create your ingress and annotate your `selfsigned` cluster-issuer
 
-```sh
+```yaml
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
